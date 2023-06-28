@@ -3,9 +3,10 @@ import React from "react";
 
 interface FormContainerProps {
     children: React.ReactNode;
+
 }
 
-const FormContainer: React.FC<FormContainerProps> = ({ children }) => {
+const FormContainer= ({ children }: FormContainerProps) => {
     return (
         <Container className='py-3'>
             <Row className='justify-content-md-center'>
