@@ -1,7 +1,7 @@
 
 const HomeScreen = () => {
     return (
-       <div>Home Screen</div>
+       <h1>Welcome to the BoardPro </h1>
     )
 }
 
