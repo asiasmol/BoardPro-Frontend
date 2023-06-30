@@ -18,7 +18,7 @@ const LoginScreen = () => {
                 email : email,
                 password: password
         })
-        localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
+        localStorage.setItem(ACCESS_TOKEN, response.data.token);
         toast.success("Poprawnie zalogowano");
         navigate('/');
     }
