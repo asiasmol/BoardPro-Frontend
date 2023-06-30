@@ -13,7 +13,6 @@ const HomeScreen = () => {
             const response = await UserApi.getUser();
             localStorage.getItem(ACCESS_TOKEN)
             setFirstName(response.data.firstName)
-            console.log("dupa")
         } catch (error) {
             toast.error("Bład serwera")
         }

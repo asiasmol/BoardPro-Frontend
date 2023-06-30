@@ -18,7 +18,7 @@ const Header = () => {
             title: title
         })
         toast.success("Utworzono Tablice");
-        navigate("/");
+        navigate("/board");
     }
 
     return (
