@@ -3,6 +3,9 @@ import Button from "react-bootstrap/Button";
 import FormContainer from "../components/FormContainer";
 import {SyntheticEvent, useState} from "react";
 import {useNavigate} from "react-router-dom"
+import {AuthApi} from "../api/AuthApi";
+import {SignUpRequest} from "../models/api/SignUpRequest";
+import {toast} from "react-toastify";
 
 const SignupScreen = () => {
     const navigate = useNavigate()
@@ -13,19 +16,16 @@ const SignupScreen = () => {
 
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault()
-
-        // interact with the backend using fetch
-        await fetch('http://localhost:8080/api/v1/auth/register', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                firstName,
-                lastName,
-                email,
-                password
-            }),
+        let user: SignUpRequest = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
+        }
+        AuthApi.signUp(user).then(r => {
         })
-        navigate('/login');
+        toast.success("Poprawnie zarejestrowano");
+        navigate("/login");
     }
     return (
         <FormContainer>

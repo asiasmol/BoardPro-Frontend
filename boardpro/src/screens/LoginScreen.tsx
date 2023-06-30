@@ -2,16 +2,25 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FormContainer from "../components/FormContainer";
 import {SyntheticEvent, useState} from 'react';
+import {useNavigate} from "react-router-dom";
+import { toast } from "react-toastify";
+import {AuthApi} from "../api/AuthApi";
+import {ACCESS_TOKEN} from "../constants/constants";
 
 const LoginScreen = () => {
-
+    const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const submitHandler = (e: SyntheticEvent) => {
-        e.preventDefault()
 
-        // interact with the backend using fetch
-        console.log('submitted')
+    const submitHandler = async (e: SyntheticEvent) => {
+        e.preventDefault()
+        const response = await AuthApi.signIn({
+                email : email,
+                password: password
+        })
+        localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
+        toast.success("Poprawnie zalogowano");
+        navigate('/');
     }
     return (
         <FormContainer>
