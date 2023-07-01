@@ -1,13 +1,13 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import FormContainer from "../components/FormContainer";
+import FormContainer from "../FormContainer";
 import {SyntheticEvent, useState} from "react";
 import {useNavigate} from "react-router-dom"
-import {AuthApi} from "../api/AuthApi";
-import {SignUpRequest} from "../models/api/SignUpRequest";
+import {AuthApi} from "../../api/AuthApi";
+import {SignUpRequest} from "../../models/api/SignUpRequest";
 import {toast} from "react-toastify";
 
-const SignupScreen = () => {
+const Signup = () => {
     const navigate = useNavigate()
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -66,4 +66,4 @@ const SignupScreen = () => {
     )
 }
 
-export default SignupScreen
+export default Signup

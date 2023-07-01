@@ -1,13 +1,13 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import FormContainer from "../components/FormContainer";
+import FormContainer from "../FormContainer";
 import {SyntheticEvent, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
-import {AuthApi} from "../api/AuthApi";
-import {ACCESS_TOKEN} from "../constants/constants";
+import {AuthApi} from "../../api/AuthApi";
+import {ACCESS_TOKEN} from "../../constants/constants";
 
-const LoginScreen = () => {
+const Login = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -47,4 +47,4 @@ const LoginScreen = () => {
     );
 }
 
-export default LoginScreen
+export default Login

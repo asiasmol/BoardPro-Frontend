@@ -1,17 +1,19 @@
 import { Routes, Route } from "react-router-dom";
-import HomeScreen from "../screens/HomeScreen";
-import SignupScreen from "../screens/SignupScreen";
-import LoginScreen from "../screens/LoginScreen";
-import BoardsScreen from "../screens/BoardsScreen";
+import Home from "../components/home/Home";
+import Signup from "../components/signup/Signup";
+import Login from "../components/login/Login";
+import Boards from "../components/boards/Boards";
+import Board from "../components/board/Board";
 
 export const AppRouter = () => {
 
     return (
             <Routes>
-                <Route path='/' element={<HomeScreen/>}/>
-                <Route path='/signup' element={<SignupScreen/>}/>
-                <Route path='/login' element={<LoginScreen/>}/>
-                <Route path='/board' element={<BoardsScreen/>}/>
+                <Route path='/' element={<Home/>}/>
+                <Route path='/signup' element={<Signup/>}/>
+                <Route path='/login' element={<Login/>}/>
+                <Route path='/boards' element={<Boards/>}/>
+                <Route path='/board/:id' element={<Board/>}/>
             </Routes>
     );
 };

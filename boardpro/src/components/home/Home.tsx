@@ -1,9 +1,9 @@
 import {useCallback, useEffect, useState} from "react";
-import {UserApi} from "../api/UserApi";
+import {UserApi} from "../../api/UserApi";
 import {toast} from "react-toastify";
-import {ACCESS_TOKEN} from "../constants/constants";
+import {ACCESS_TOKEN} from "../../constants/constants";
 
-const HomeScreen = () => {
+const Home = () => {
     const [firstName, setFirstName] = useState('');
 
 
@@ -30,4 +30,4 @@ const HomeScreen = () => {
     )
 }
 
-export default HomeScreen
+export default Home

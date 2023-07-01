@@ -1,24 +1,20 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {Card} from "react-bootstrap";
-import {BoardApi} from "../api/BoardApi";
-import TestImage from "../image.jpg"
+import {BoardApi} from "../../api/BoardApi";
+import TestImage from "../../image.jpg"
 import {useNavigate} from "react-router-dom";
+import {BoardResponse} from "../../models/api/BoardResponse";
+import {log} from "util";
 
-
-type Board = {
-    title : string;
-}
-
-const BoardsScreen = () => {
-
-    const [boards, setBoards] = useState<Board[]>([]);
-
+const Boards = () => {
+    const navigate = useNavigate()
+    const [boards, setBoards] = useState<BoardResponse[]>([]);
 
 
     const fetchBoards = useCallback(async () => {
         try {
-            const response = await BoardApi.getBoard();
+            const response = await BoardApi.getBoards();
             setBoards(response.data)
         } catch {
             toast.error("Bład serwera")
@@ -37,12 +33,13 @@ const BoardsScreen = () => {
         )
     }
 
+
     return (
             <>
                 {boards.map((board, index) => (
-                    <Card key={index}>
+                    <Card key={index} >
                         <Card.Img variant="top" src={TestImage} style={{ width: 'auto', height: '180px' }} />
-                        <Card.Body>
+                        <Card.Body onClick={()=> navigate(`/board/${board.id}`)}>
                             <Card.Text>
                                 {board.title}
                             </Card.Text>
@@ -53,4 +50,4 @@ const BoardsScreen = () => {
             )
 }
 
-export default BoardsScreen
+export default Boards
