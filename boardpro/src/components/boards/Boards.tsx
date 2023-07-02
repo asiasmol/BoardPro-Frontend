@@ -5,7 +5,6 @@ import {BoardApi} from "../../api/BoardApi";
 import TestImage from "../../image.jpg"
 import {useNavigate} from "react-router-dom";
 import {BoardResponse} from "../../models/api/BoardResponse";
-import {log} from "util";
 
 const Boards = () => {
     const navigate = useNavigate()
