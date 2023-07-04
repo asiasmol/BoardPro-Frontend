@@ -1,17 +1,16 @@
-import React, {useCallback, useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {useCallback, useEffect, useState} from "react";
+import {BoardResponse} from "../../models/api/BoardResponse";
+import {CardListResponse} from "../../models/api/CardListResponse";
 import {BoardApi} from "../../api/BoardApi";
 import {toast} from "react-toastify";
-import {BoardResponse} from "../../models/api/BoardResponse";
-import {useParams} from "react-router-dom";
-import {Card} from "react-bootstrap";
-import HoverableCardText from "./HoverableCardText"
-import AddNewCard from "../card/AddNewCard";
 import AddNewCardList from "../card/AddNewCardList";
-
+import CardList from "../card/CardList";
 
 const Board = () => {
-    const { id } = useParams()
+    const { id } = useParams();
     const [board, setBoard] = useState<BoardResponse | null>(null);
+    const [cardLists, setCardLists] = useState<CardListResponse[]>([]);
 
     const fetchBoard = useCallback(async () => {
         if (id) {
@@ -20,48 +19,30 @@ const Board = () => {
                     boardId: id
                 });
                 setBoard(response.data);
+                setCardLists(response.data.cardLists)
             } catch (error) {
                 toast.error("Błąd serwera");
             }
         }
     }, [id]);
 
-
     useEffect(() => {
         fetchBoard();
-    }, [fetchBoard])
-
-
+    }, [fetchBoard]);
 
 
     return (
         <>
-            <h2>{board?.title}</h2>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-                <Card bg="dark" text="white" style={{ width: '18rem', borderRadius: '15px' }} className="mb-3">
-                    <Card.Header>DO ZROBIENIA</Card.Header>
-                    <Card.Body>
-                        <HoverableCardText text="TESTTESTTEST" />
-                        <HoverableCardText text="TESTTESTTEST" />
-                        <AddNewCard />
-                    </Card.Body>
-                </Card>
-
-                <Card bg="dark" text="white" style={{ width: '18rem', borderRadius: '15px' }} className="mb-3">
-                    <Card.Header>DO ZROBIENIA</Card.Header>
-                    <Card.Body>
-                        <HoverableCardText text="TESTTESTTEST" />
-                        <HoverableCardText text="TESTTESTTEST" />
-                        <AddNewCard />
-                    </Card.Body>
-                </Card>
-
-                <AddNewCardList boardId={board?.id}/>
-
-            </div>
+        <h2>{board?.title}</h2>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+            {cardLists.map((cardList, index) => (
+                <CardList key={index} boardId={board?.id} cardList={cardList}/>
+            ))}
+            <AddNewCardList  boardId={board?.id}/>
+        </div>
         </>
     )
-
 }
 
 export default Board
+

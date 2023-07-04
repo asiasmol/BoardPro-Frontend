@@ -3,7 +3,7 @@ import Home from "../components/home/Home";
 import Signup from "../components/signup/Signup";
 import Login from "../components/login/Login";
 import Boards from "../components/boards/Boards";
-import Board from "../components/board/Board";
+import Board from "../components/board/Board"
 
 export const AppRouter = () => {
 

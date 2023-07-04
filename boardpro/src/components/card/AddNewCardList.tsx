@@ -21,9 +21,9 @@ const AddNewCardList = ({boardId}: Props) => {
                 title: title
             }, boardId);
             console.log(title)
-            toast.success("Dodano Karte");
+            toast.success("Dodano Listę");
         } catch {
-            toast.error("Błąd serwera tutaj");
+            toast.error("Błąd serwera");
         }
     };
 
@@ -47,8 +47,8 @@ const AddNewCardList = ({boardId}: Props) => {
     return (
         <div>
             {!showForm && (
-                <Button variant="success" onClick={handleButtonClick} style={{ width: '18rem', borderRadius: '2rem'}}>
-                Add Card
+                <Button variant="success" onClick={handleButtonClick} style={{ width: '18rem', borderRadius: '0.5rem'}}>
+                + Dodaj kolejną listę
                 </Button>
             )}
             {showForm && (

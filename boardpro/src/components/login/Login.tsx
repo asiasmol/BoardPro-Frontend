@@ -1,16 +1,18 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FormContainer from "../FormContainer";
-import {SyntheticEvent, useState} from 'react';
+import {SyntheticEvent, useContext, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import {AuthApi} from "../../api/AuthApi";
 import {ACCESS_TOKEN} from "../../constants/constants";
+import {UserContext} from "../../context/UserContext";
 
 const Login = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const context = useContext(UserContext)
 
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault()
@@ -19,6 +21,7 @@ const Login = () => {
                 password: password
         })
         localStorage.setItem(ACCESS_TOKEN, response.data.token);
+        context.currentUserModifier({email: email, firstname: "Paweł"})
         toast.success("Poprawnie zalogowano");
         navigate('/');
     }

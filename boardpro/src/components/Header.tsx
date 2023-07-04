@@ -3,15 +3,17 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {DropdownButton, Form} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import {SyntheticEvent, useState} from "react";
+import {SyntheticEvent, useContext, useState} from "react";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import {BoardApi} from "../api/BoardApi";
+import {UserContext} from "../context/UserContext";
 
 
 const Header = () => {
     const [title, setTitle] = useState('');
     const navigate = useNavigate()
+    const {currentUser} = useContext(UserContext)
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault()
         await BoardApi.createBoard({
@@ -25,25 +27,30 @@ const Header = () => {
         <Navbar bg='dark' variant='dark' expand="lg" collapseOnSelect>
             <Container>
                 <Navbar.Brand href="/">BoardPro</Navbar.Brand>
-                <DropdownButton variant="info" id="dropdown-basic-button" title="Create">
+                {currentUser&& <DropdownButton variant="info" id="dropdown-basic-button" title="Create">
                     <Container>
                         <Form onSubmit={submitHandler}>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Control type="title" placeholder="title"
                                               value={title}
-                                              onChange={e=>setTitle(e.target.value)}/>
+                                              onChange={e => setTitle(e.target.value)}/>
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
                         </Form>
                     </Container>
-                </DropdownButton>
+                </DropdownButton>}
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">
-                        <Nav.Link href="/signup">Sign Up</Nav.Link>
-                        <Nav.Link href="/login">Login</Nav.Link>
+                        { !currentUser ? <>
+                                <Nav.Link href="/signup">Sign Up</Nav.Link>
+                                <Nav.Link href="/login">Login</Nav.Link> </> :
+                            <>
+                                <Nav.Link href="/signup">Logout</Nav.Link>
+                                <Nav.Link href="/login">{currentUser.email}</Nav.Link>
+                            </>}
 
                     </Nav>
                 </Navbar.Collapse>
