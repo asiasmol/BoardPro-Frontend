@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {DropdownButton, Form} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import {SyntheticEvent, useContext, useState} from "react";
+import {SyntheticEvent, useCallback, useContext, useState} from "react";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import {BoardApi} from "../api/BoardApi";
@@ -11,9 +11,10 @@ import {UserContext} from "../context/UserContext";
 
 
 const Header = () => {
-    const [title, setTitle] = useState('');
     const navigate = useNavigate()
-    const {currentUser} = useContext(UserContext)
+    const {currentUser, currentUserModifier} = useContext(UserContext)
+    const [title, setTitle] = useState('');
+
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault()
         await BoardApi.createBoard({
@@ -22,6 +23,13 @@ const Header = () => {
         toast.success("Utworzono Tablice");
         navigate("/boards");
     }
+
+    const logout = useCallback(() => {
+        currentUserModifier(null);
+        localStorage.removeItem('ACCESS_TOKEN')
+
+        navigate("/");
+    }, [navigate]);
 
     return (
         <Navbar bg='dark' variant='dark' expand="lg" collapseOnSelect>
@@ -46,11 +54,12 @@ const Header = () => {
                     <Nav className="ms-auto">
                         { !currentUser ? <>
                                 <Nav.Link href="/signup">Sign Up</Nav.Link>
-                                <Nav.Link href="/login">Login</Nav.Link> </> :
-                            <>
-                                <Nav.Link href="/signup">Logout</Nav.Link>
+                                <Nav.Link href="/login">Login</Nav.Link>
+                            </> : <>
+                                <Nav.Link onClick={()=>{logout()}}>Logout</Nav.Link>
                                 <Nav.Link href="/login">{currentUser.email}</Nav.Link>
-                            </>}
+                            </>
+                        }
 
                     </Nav>
                 </Navbar.Collapse>
