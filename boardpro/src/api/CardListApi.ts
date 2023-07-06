@@ -10,4 +10,12 @@ export class CardListApi {
             },
         });
 
+    static changeTitle = async (request: CardListRequest, boardId: number | undefined, cardListId: number | undefined) =>
+        await authorizedApi.patch("http://localhost:8080/api/cardList", request, {
+            params: {
+                boardId: boardId,
+                cardListId: cardListId
+            },
+        });
+
 }

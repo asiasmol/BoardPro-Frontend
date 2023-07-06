@@ -7,20 +7,23 @@ import "react-toastify/dist/ReactToastify.css";
 import {withAxiosIntercepted} from "./hooks/withAxiosIntercepted";
 import {AppRouter} from "./router/AppRouter";
 import {UserContextProvider} from "./context/UserContext";
+import {BoardContextProvider} from "./context/BoardContext";
 
 
 function App() {
 
     return (
         <UserContextProvider>
-            <Header/>
-            <main>
-                <Container>
-                    <AppRouter />
-                    <ToastContainer />
-                </Container>
-            </main>
-            <Footer/>
+            <BoardContextProvider>
+                <Header/>
+                <main>
+                    <Container>
+                        <AppRouter />
+                        <ToastContainer />
+                    </Container>
+                </main>
+                <Footer/>
+            </BoardContextProvider>
         </UserContextProvider>
 
     );

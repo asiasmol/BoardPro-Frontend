@@ -1,29 +1,45 @@
 import Button from "react-bootstrap/Button";
 import {Form} from "react-bootstrap";
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {CardListApi} from "../../api/CardListApi";
+import {BoardContext} from "../../context/BoardContext";
+import {CardListResponse} from "../../models/api/CardListResponse";
 
 
-interface Props {
-    boardId : number | undefined
-}
-const AddNewCardList = ({boardId}: Props) => {
+
+const AddNewCardList = () => {
 
     const [showForm, setShowForm] = useState(false);
     const [title, setTitle] = useState('');
+    const context = useContext(BoardContext)
+    const [cardListAdded, setCardListAdded] = useState(false);
 
     const createCardList = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-        console.log(boardId)
         try {
-            await CardListApi.createCardList({
+            const newCardListResponse =  await CardListApi.createCardList({
                 title: title
-            }, boardId);
-            console.log(title)
-            toast.success("Dodano Listę");
+            }, context.currentBoard?.id);
+
+            const newCardList: CardListResponse = {
+                id: newCardListResponse.data.id,
+                title: newCardListResponse.data.title,
+                cards: []
+            };
+
+            if (context.currentBoard) {
+                const updatedCardLists = [...context.currentBoard.cardLists, newCardList];
+
+                context.currentBoardModifier({
+                    ...context.currentBoard,
+                    cardLists: updatedCardLists
+                });
+            }
+            setCardListAdded(true)
+            toast.success("Dodano Karte");
         } catch {
-            toast.error("Błąd serwera");
+            toast.error("Błąd serwera tutaj");
         }
     };
 
@@ -32,17 +48,22 @@ const AddNewCardList = ({boardId}: Props) => {
         setShowForm(true);
     };
 
+    const handleCancelClick = () => {
+        setShowForm(false);
+    }
+
     const handleInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setTitle(event.target.value);
     };
 
-    const handleSubmit = async (event: { preventDefault: () => void; }) => {
-        event.preventDefault();
-        console.log('Wprowadzony tytuł:', title);
-        setShowForm(false);
-        setTitle('');
+    useEffect(() => {
+        if (cardListAdded) {
+            setShowForm(false);
+            setTitle("");
+            setCardListAdded(false);
+        }
+    }, [cardListAdded]);
 
-    };
 
     return (
         <div>
@@ -56,8 +77,11 @@ const AddNewCardList = ({boardId}: Props) => {
                     <Form.Group className="mb-5" controlId="formBasicEmail">
                         <Form.Control type="text" placeholder="Title" value={title} onChange={handleInputChange}/>
                     </Form.Group>
-                    <Button variant="primary" type="submit" style={{ width: '18rem', borderRadius: '15px' }}>
-                    Submit
+                    <Button variant="primary" type="submit" style={{ width: '10rem', borderRadius: '0.5rem' }}>
+                        Submit
+                    </Button>
+                    <Button onClick={handleCancelClick} variant="primary" type="button" style={{ width: '10rem', borderRadius: '0.5rem' }}>
+                        Cancel
                     </Button>
                 </Form>
             )}

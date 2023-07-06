@@ -1,7 +1,7 @@
 import {CardListResponse} from "./api/CardListResponse";
 
 export type  Board = {
-    boardId: number;
+    id: number;
     title: string;
     cardLists: CardListResponse[] | [];
 }

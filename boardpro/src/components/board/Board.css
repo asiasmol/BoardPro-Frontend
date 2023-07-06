@@ -7,13 +7,3 @@
 .card-text:hover {
     background-color: #555;
 }
-
-.button-new-card{
-    flex: 0 0 auto;
-    margin-right: auto;
-}
-
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-}
