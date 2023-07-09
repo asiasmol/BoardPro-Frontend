@@ -1,9 +1,0 @@
-.card-text {
-    transition: background-color 0.3s ease;
-    flex: 0 0 100%;
-    margin-bottom: 10px;
-}
-
-.card-text:hover {
-    background-color: #555;
-}

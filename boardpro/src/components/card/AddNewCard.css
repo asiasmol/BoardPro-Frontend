@@ -1,9 +1,0 @@
-.add-card {
-    border-radius: 15px;
-    padding: 0.5em;
-    color: white;
-    transition: background-color 0.3s ease;
-}
-.add-card:hover {
-    background-color: #1f9bcf;
-}

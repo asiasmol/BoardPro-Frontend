@@ -2,12 +2,12 @@ import {UserContextType} from "../models/UserContextType";
 import {User} from "../models/User";
 import React, {createContext, useState} from "react";
 
-const defalutSettings: UserContextType={
+const defaultSettings: UserContextType={
     currentUser: null,
     currentUserModifier: ( user: User | null) =>{}
 }
 
-export const UserContext = createContext<UserContextType>(defalutSettings)
+export const UserContext = createContext<UserContextType>(defaultSettings)
 
 export const UserContextProvider = ({children}: React.PropsWithChildren) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);

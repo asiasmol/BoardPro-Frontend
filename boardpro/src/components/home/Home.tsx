@@ -25,7 +25,7 @@ const Home = () => {
 
     return firstName ? (
         <h1>Welcome {firstName} </h1>
-        ) : (
+    ) : (
         <h1>Welcome to the BoardPro </h1>
     )
 }

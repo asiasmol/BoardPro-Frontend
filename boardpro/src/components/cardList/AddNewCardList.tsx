@@ -1,10 +1,11 @@
-import Button from "react-bootstrap/Button";
-import {Form} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {CardListApi} from "../../api/CardListApi";
 import {BoardContext} from "../../context/BoardContext";
 import {CardListResponse} from "../../models/api/CardListResponse";
+import {Box, Button, Grid} from "@mui/material";
+import {Container} from "../boards/Boards.styles";
+import {StyledTextField} from "./AddNewCardList.styles";
 
 
 
@@ -66,28 +67,51 @@ const AddNewCardList = () => {
 
 
     return (
-        <div>
-            {!showForm && (
-                <Button variant="success" onClick={handleButtonClick} style={{ width: '18rem', borderRadius: '0.5rem'}}>
-                + Dodaj kolejną listę
-                </Button>
-            )}
-            {showForm && (
-                <Form onSubmit={createCardList}>
-                    <Form.Group className="mb-5" controlId="formBasicEmail">
-                        <Form.Control type="text" placeholder="Title" value={title} onChange={handleInputChange}/>
-                    </Form.Group>
-                    <Button variant="primary" type="submit" style={{ width: '10rem', borderRadius: '0.5rem' }}>
-                        Submit
+        <Container>
+            <Box>
+                {!showForm && (
+                    <Button
+                        variant="contained"
+                        color="info"
+                        onClick={handleButtonClick}
+                        sx={{ width: '18rem', borderRadius: '0.5rem'}}
+                    >
+                        + Add new list
                     </Button>
-                    <Button onClick={handleCancelClick} variant="primary" type="button" style={{ width: '10rem', borderRadius: '0.5rem' }}>
-                        Cancel
-                    </Button>
-                </Form>
-            )}
-        </div>
-)
+                )}
+                {showForm && (
+                    <Box component="form" onSubmit={createCardList} sx={{ width: '18rem' }}>
+                        <Box mb={3}>
+                            <StyledTextField
+                                type="text"
+                                placeholder="Title"
+                                value={title}
+                                onChange={handleInputChange}
+                            />
+                        </Box>
+                        <Grid container justifyContent="space-between">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                sx={{ width: '7rem', borderRadius: '0.5rem' }}
+                            >
+                                Submit
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="warning"
+                                onClick={handleCancelClick}
+                                sx={{ width: '7rem', borderRadius: '0.5rem'}}
+                            >
+                                Cancel
+                            </Button>
+                        </Grid>
+                    </Box>
+                )}
+            </Box>
+        </Container>
+    )
 }
 
 export default AddNewCardList;
-

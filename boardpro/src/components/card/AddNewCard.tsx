@@ -1,11 +1,10 @@
-import "./AddNewCard.css"
 import React, {useContext, useEffect, useState} from "react";
 import {toast} from "react-toastify";
-import Button from "react-bootstrap/Button";
-import {Form} from "react-bootstrap";
 import {CardApi} from "../../api/CardApi";
 import {BoardContext} from "../../context/BoardContext";
 import {CardResponse} from "../../models/api/CardResponse";
+import {Box, Button, Grid, TextField} from "@mui/material";
+import {StyledTextField} from "./AddNewCard.styles";
 
 interface Props{
     cardListId: number,
@@ -73,22 +72,39 @@ const AddNewCard = ({cardListId}: Props) => {
     return (
         <div>
             {!showForm && (
-                <Button variant="success" onClick={handleButtonClick} style={{ width: '16rem', borderRadius: '0.5rem'}}>
+                <Button onClick={handleButtonClick} style={{ width: '16rem', borderRadius: '0.5rem'}}>
                     + Dodaj karte
                 </Button>
             )}
             {showForm && (
-                <Form onSubmit={createCard}>
-                    <Form.Group className="mb-5" controlId="formBasicEmail">
-                        <Form.Control type="text" placeholder="Title" value={title} onChange={handleInputChange}/>
-                    </Form.Group>
-                    <Button variant="primary" type="submit" style={{ width: '10rem', borderRadius: '0.5rem' }}>
-                        Submit
-                    </Button>
-                    <Button onClick={handleCancelClick} variant="primary" type="button" style={{ width: '10rem', borderRadius: '0.5rem' }}>
-                        Cancel
-                    </Button>
-                </Form>
+                <Box component="form" onSubmit={createCard} sx={{ width: '17rem' }}>
+                    <Box mb={3}>
+                        <StyledTextField
+                            type="text"
+                            placeholder="Title"
+                            value={title}
+                            onChange={handleInputChange}
+                        />
+                    </Box>
+                    <Grid container justifyContent="space-between">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            sx={{ width: '7rem', borderRadius: '0.5rem' }}
+                        >
+                            Submit
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            color="warning"
+                            onClick={handleCancelClick}
+                            sx={{ width: '7rem', borderRadius: '0.5rem'}}
+                        >
+                            Cancel
+                        </Button>
+                    </Grid>
+                </Box>
             )}
         </div>
     )

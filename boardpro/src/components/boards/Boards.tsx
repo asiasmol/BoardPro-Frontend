@@ -1,12 +1,19 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 import {toast} from "react-toastify";
-import {Card} from "react-bootstrap";
+
 import {BoardApi} from "../../api/BoardApi";
 import TestImage from "../../image.jpg"
 import {useNavigate} from "react-router-dom";
 import {BoardResponse} from "../../models/api/BoardResponse";
 import {BoardContext} from "../../context/BoardContext";
 import { Board } from "../../models/Board";
+
+import {
+    Container,
+    StyledBox,
+    StyledCard, StyledCardContent, StyledCardMedia
+} from "./Boards.styles";
+import {CardActionArea, Typography} from "@mui/material";
 
 
 const Boards = () => {
@@ -43,19 +50,32 @@ const Boards = () => {
 
 
     return (
-            <>
-                {boards.map((board, index) => (
-                    <Card key={index} >
-                        <Card.Img variant="top" src={TestImage} style={{ width: 'auto', height: '180px' }} />
-                        <Card.Body onClick={()=> handleBoardClick(board)}>
-                            <Card.Text>
-                                {board.title}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                ))}
-            </>
-            )
+        <Container>
+            {boards.map((board, index) => (
+                <StyledCard>
+                    <CardActionArea onClick={()=> handleBoardClick(board)}>
+                        <StyledBox>
+                            <StyledCardContent>
+                                <Typography component="div" variant="h5">
+                                    {board.title}
+                                </Typography>
+                                <Typography variant="subtitle1" color="text.secondary" component="div">
+                                    Mac Miller
+                                </Typography>
+                            </StyledCardContent>
+                        </StyledBox>
+                        <StyledCardMedia
+                            component="img"
+                            image={TestImage}
+                            alt="Live from space album cover"
+                        />
+                    </CardActionArea>
+                </StyledCard>
+            ))}
+        </Container>
+
+
+    )
 }
 
 export default Boards

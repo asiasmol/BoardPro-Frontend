@@ -1,11 +1,9 @@
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import FormContainer from "../FormContainer";
 import {SyntheticEvent, useState} from "react";
 import {useNavigate} from "react-router-dom"
 import {AuthApi} from "../../api/AuthApi";
 import {SignUpRequest} from "../../models/api/SignUpRequest";
 import {toast} from "react-toastify";
+import {Box, Button, Container, CssBaseline, Grid, TextField, Typography, Link} from "@mui/material";
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -28,41 +26,90 @@ const Signup = () => {
         navigate("/login");
     }
     return (
-        <FormContainer>
-            <h1>Sign Up</h1>
-            <Form onSubmit={submitHandler}>
-                <Form.Group className="my-3" controlId="firstName">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control placeholder="Enter your first name"
-                                  value={firstName}
-                                  onChange={e=>setFirstName(e.target.value)}/>
-                </Form.Group>
 
-                <Form.Group className="my-3" controlId="lastName">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control placeholder="Enter your last name"
-                                  value={lastName}
-                                  onChange={e=>setLastName(e.target.value)}/>
-                </Form.Group>
+        <Container component="main" maxWidth="xs">
 
-                <Form.Group className="my-3" controlId="email">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter your email"
-                                  value={email}
-                                  onChange={e=>setEmail(e.target.value)}/>
-                </Form.Group>
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}
+            >
+                <Typography component="h1" variant="h5">
+                    Signup
+                </Typography>
+                <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="firstName"
+                        label="firstName"
+                        name="firstName"
+                        autoComplete="firstName"
+                        autoFocus
+                        value={firstName}
+                        onChange={e=>setFirstName(e.target.value)}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="lastName"
+                        label="lastName"
+                        name="lastName"
+                        autoComplete="lastName"
+                        autoFocus
+                        value={lastName}
+                        onChange={e=>setLastName(e.target.value)}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="email"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        value={email}
+                        onChange={e=>setEmail(e.target.value)}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={e=>setPassword(e.target.value)}
+                    />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                    >
+                        Signup
+                    </Button>
 
-                <Form.Group className="my-3" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password"
-                                  value={password}
-                                  onChange={e=>setPassword(e.target.value)}/>
-                </Form.Group>
-                <Button variant="primary" type="submit" className="my-3">
-                    Submit
-                </Button>
-            </Form>
-        </FormContainer>
+
+                    <Grid container>
+                        <Grid item>
+                            <Link href="/login" variant="body2">
+                                {"Masz już konto? Zaloguj się"}
+                            </Link>
+                        </Grid>
+                    </Grid>
+
+                </Box>
+            </Box>
+        </Container>
+
     )
 }
 
