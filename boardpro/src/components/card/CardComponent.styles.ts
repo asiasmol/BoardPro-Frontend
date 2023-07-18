@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Card, TextField} from "@mui/material";
+import {Card} from "@mui/material";
 
 export const StyledCard = styled(Card)`
   &:hover {

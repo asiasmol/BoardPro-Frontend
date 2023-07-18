@@ -15,7 +15,8 @@ import {rectSortingStrategy, SortableContext, sortableKeyboardCoordinates} from 
 import {CardListResponse} from "../../api/apiModels/CardListResponse";
 import SortableCardList from "./SortableCardList";
 import {KeyboardSensor, MouseSensor} from "../MyPointerSensor";
-import CardList from "../cardList/CardList";
+import {CustomAppBar} from "./Board.styles";
+import {Avatar, Toolbar, Typography} from "@mui/material";
 
 const Board = () => {
     const context = useContext(BoardContext)
@@ -113,6 +114,16 @@ const Board = () => {
 
     return (
         <>
+            <CustomAppBar position="static" color="secondary" enableColorOnDark>
+                <Toolbar>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        {context.currentBoard?.title}
+                    </Typography>
+                    {context.currentBoard?.users.map((user, index) => (
+                        <Avatar key={index} alt={user.firstName.toUpperCase()} src="/static/images/avatar/2.jpg" />
+                    ))}
+                </Toolbar>
+            </CustomAppBar>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "start" }}>
                 <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
                     <SortableContext items={cards.map(card => card.id.toString())} strategy={rectSortingStrategy}>

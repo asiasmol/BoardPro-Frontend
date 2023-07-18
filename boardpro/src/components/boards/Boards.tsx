@@ -6,7 +6,6 @@ import TestImage from "../../image.jpg"
 import {useNavigate} from "react-router-dom";
 import {BoardResponse} from "../../api/apiModels/BoardResponse";
 import {BoardContext} from "../../context/BoardContext";
-import { Board } from "../../models/Board";
 
 import {
     Container,
@@ -21,8 +20,8 @@ const Boards = () => {
     const [boards, setBoards] = useState<BoardResponse[]>([]);
     const context = useContext(BoardContext)
 
-    const handleBoardClick = (board: Board) =>{
-        context.currentBoardModifier({id: board.id, title: board.title, cardLists: board.cardLists})
+    const handleBoardClick = (board: BoardResponse) =>{
+        context.currentBoardModifier({id: board.id, title: board.title, cardLists: board.cardLists, users: board.users})
         navigate(`/board/${board.id}`)
     }
 
