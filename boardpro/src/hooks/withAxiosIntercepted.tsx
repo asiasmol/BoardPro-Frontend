@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import { ACCESS_TOKEN } from "../constants/constants";
 import { useNavigate } from "react-router-dom";
 

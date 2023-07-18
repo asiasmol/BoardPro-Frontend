@@ -1,4 +1,4 @@
-import {CardListResponse} from "./api/CardListResponse";
+import {CardListResponse} from "../api/apiModels/CardListResponse";
 
 export type  Board = {
     id: number;

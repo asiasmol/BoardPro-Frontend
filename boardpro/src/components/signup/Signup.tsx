@@ -1,7 +1,7 @@
 import {SyntheticEvent, useState} from "react";
 import {useNavigate} from "react-router-dom"
 import {AuthApi} from "../../api/AuthApi";
-import {SignUpRequest} from "../../models/api/SignUpRequest";
+import {SignUpRequest} from "../../api/apiModels/SignUpRequest";
 import {toast} from "react-toastify";
 import {Box, Button, Container, CssBaseline, Grid, TextField, Typography, Link} from "@mui/material";
 

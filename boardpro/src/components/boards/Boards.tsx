@@ -4,7 +4,7 @@ import {toast} from "react-toastify";
 import {BoardApi} from "../../api/BoardApi";
 import TestImage from "../../image.jpg"
 import {useNavigate} from "react-router-dom";
-import {BoardResponse} from "../../models/api/BoardResponse";
+import {BoardResponse} from "../../api/apiModels/BoardResponse";
 import {BoardContext} from "../../context/BoardContext";
 import { Board } from "../../models/Board";
 
@@ -52,7 +52,7 @@ const Boards = () => {
     return (
         <Container>
             {boards.map((board, index) => (
-                <StyledCard>
+                <StyledCard key={index}>
                     <CardActionArea onClick={()=> handleBoardClick(board)}>
                         <StyledBox>
                             <StyledCardContent>

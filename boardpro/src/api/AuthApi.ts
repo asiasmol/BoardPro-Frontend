@@ -1,7 +1,7 @@
 import axios from "axios";
-import { SignInRequest } from "../models/api/SignInRequest";
-import { SignUpRequest } from "../models/api/SignUpRequest";
-import { SignInResponse } from "../models/api/SignInResponse";
+import { SignInRequest } from "./apiModels/SignInRequest";
+import { SignUpRequest } from "./apiModels/SignUpRequest";
+import { SignInResponse } from "./apiModels/SignInResponse";
 
 export class AuthApi {
     static signIn = async (request: SignInRequest) =>

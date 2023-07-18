@@ -5,8 +5,22 @@ import {useNavigate} from "react-router-dom";
 import {BoardApi} from "../../api/BoardApi";
 import {UserContext} from "../../context/UserContext";
 import * as React from 'react';
-import {AppBar, Box, Button, Menu, TextField, Toolbar, Typography} from "@mui/material";
+import {
+    AppBar,
+    Box,
+    Button,
+    FormControlLabel,
+    FormGroup,
+    Menu,
+    styled,
+    Switch,
+    TextField,
+    Toolbar,
+    Typography
+} from "@mui/material";
 import { CustomAppBar } from "./Navbar.styles";
+import {ThemeContext} from "../../context/ThemeContext";
+
 
 
 const Navbar = () => {
@@ -16,8 +30,14 @@ const Navbar = () => {
     const navigate = useNavigate();
     const {currentUser, currentUserModifier} = useContext(UserContext);
     const id = open ? 'simple-popover' : undefined;
+    const { toggleTheme } = useContext(ThemeContext);
+    const [checked, setChecked] = React.useState(true);
 
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setChecked(event.target.checked);
+        toggleTheme()
+    };
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -41,6 +61,8 @@ const Navbar = () => {
         localStorage.removeItem('ACCESS_TOKEN')
         navigate("/");
     }, [navigate])
+
+
 
     return (
         <CustomAppBar position="static">
@@ -78,10 +100,22 @@ const Navbar = () => {
                         </Menu>
                         <Button color="inherit" href="/boards">Boards</Button>
                         <Button color="inherit" onClick={logout}>Logout</Button>
+                        <Switch
+                            color="warning"
+                            checked={checked}
+                            onChange={handleChange}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
                     </> :
                     <>
                         <Button color="inherit" href="/login">Login</Button>
                         <Button color="secondary" variant="contained" href="/signup">Sign Up</Button>
+                        <Switch
+                            color="warning"
+                            checked={checked}
+                            onChange={handleChange}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
                     </>}
             </Toolbar>
         </CustomAppBar>

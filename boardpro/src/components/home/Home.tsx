@@ -1,32 +1,33 @@
-import {useCallback, useEffect, useState} from "react";
-import {UserApi} from "../../api/UserApi";
-import {toast} from "react-toastify";
-import {ACCESS_TOKEN} from "../../constants/constants";
+import {
+    Container,
+    LargeFont,
+    MediumFont,
+    TextContainer,
+    ButtonContainer,
+    StyledButton,
+    ImageContainer
+} from "./Home.styles";
+
 
 const Home = () => {
-    const [firstName, setFirstName] = useState('');
 
+    return (
 
+        <Container>
+            <TextContainer>
+                <LargeFont>BoardPro łączy wszystkie </LargeFont>
+                <LargeFont>zadania i narzędzia oraz</LargeFont>
+                <LargeFont>członków zespołu</LargeFont>
+                <MediumFont>Wszystko w tym samym miejscu — nawet jeśli Twój zespół nie jest.</MediumFont>
+                <ButtonContainer>
+                    <StyledButton href="/signup"color="primary" variant="contained">Start</StyledButton>
+                    <StyledButton color="secondary" variant="contained">Jak to działa ?</StyledButton>
+                </ButtonContainer>
+            </TextContainer>
+            <ImageContainer>
 
-    const fetchUser = useCallback(async () => {
-        try {
-            const response = await UserApi.getUser();
-            localStorage.getItem(ACCESS_TOKEN)
-            setFirstName(response.data.firstName)
-        } catch (error) {
-            toast.error("Bład serwera")
-        }
-
-    }, []);
-
-    useEffect(() => {
-        fetchUser();
-    }, [fetchUser])
-
-    return firstName ? (
-        <h1>Welcome {firstName} </h1>
-    ) : (
-        <h1>Welcome to the BoardPro </h1>
+            </ImageContainer>
+        </Container>
     )
 }
 

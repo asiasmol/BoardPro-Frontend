@@ -1,5 +1,5 @@
 import { authorizedApi } from "../hooks/withAxiosIntercepted";
-import {UserResponse} from "../models/api/UserResponse";
+import {UserResponse} from "./apiModels/UserResponse";
 export class UserApi {
     static getUser = async () =>
         await authorizedApi.get<UserResponse>("http://localhost:8080/api/user");

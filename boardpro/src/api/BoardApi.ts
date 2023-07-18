@@ -1,4 +1,4 @@
-import {BoardRequest} from "../models/api/BoardRequest";
+import {BoardRequest} from "./apiModels/BoardRequest";
 import {authorizedApi} from "../hooks/withAxiosIntercepted";
 
 export class BoardApi {

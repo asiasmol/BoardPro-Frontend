@@ -2,12 +2,12 @@ import React, {useContext, useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {CardApi} from "../../api/CardApi";
 import {BoardContext} from "../../context/BoardContext";
-import {CardResponse} from "../../models/api/CardResponse";
-import {Box, Button, Grid, TextField} from "@mui/material";
+import {CardResponse} from "../../api/apiModels/CardResponse";
+import {Box, Grid, Button} from "@mui/material";
 import {StyledTextField} from "./AddNewCard.styles";
 
 interface Props{
-    cardListId: number,
+    cardListId: number
 }
 const AddNewCard = ({cardListId}: Props) => {
 
@@ -70,7 +70,7 @@ const AddNewCard = ({cardListId}: Props) => {
 
 
     return (
-        <div>
+        <>
             {!showForm && (
                 <Button onClick={handleButtonClick} style={{ width: '16rem', borderRadius: '0.5rem'}}>
                     + Dodaj karte
@@ -106,7 +106,7 @@ const AddNewCard = ({cardListId}: Props) => {
                     </Grid>
                 </Box>
             )}
-        </div>
+        </>
     )
 }
 

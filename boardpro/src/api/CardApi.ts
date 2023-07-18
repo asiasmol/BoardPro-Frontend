@@ -1,6 +1,6 @@
 
 import {authorizedApi} from "../hooks/withAxiosIntercepted";
-import {CardRequest} from "../models/api/CardRequest";
+import {CardRequest} from "./apiModels/CardRequest";
 
 export class CardApi {
 

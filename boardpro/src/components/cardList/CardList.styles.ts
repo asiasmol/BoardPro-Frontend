@@ -13,6 +13,6 @@ export const StyledCard = styled(Card)`
 `;
 
 export const StyledTextField = styled(TextField)`
-  width: 18rem;
+  width: 16rem;
   border-radius: 0.5rem;
 `;

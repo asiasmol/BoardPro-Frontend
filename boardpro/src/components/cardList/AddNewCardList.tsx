@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {CardListApi} from "../../api/CardListApi";
 import {BoardContext} from "../../context/BoardContext";
-import {CardListResponse} from "../../models/api/CardListResponse";
+import {CardListResponse} from "../../api/apiModels/CardListResponse";
 import {Box, Button, Grid} from "@mui/material";
 import {Container} from "../boards/Boards.styles";
 import {StyledTextField} from "./AddNewCardList.styles";

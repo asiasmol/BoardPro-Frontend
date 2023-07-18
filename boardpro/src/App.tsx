@@ -8,26 +8,27 @@ import { ToastContainer } from "react-toastify";
 import {AppRouter} from "./router/AppRouter";
 import {UserContextProvider} from "./context/UserContext";
 import {BoardContextProvider} from "./context/BoardContext";
-import ThemeSwitcher from "./components/theme/ThemeSwitcher";
 import {CssBaseline} from "@mui/material";
+import {ThemeContext, ThemeContextProvider} from "./context/ThemeContext";
 
 function App() {
 
     return (
 
-        <ThemeSwitcher>
-            <UserContextProvider>
-                <BoardContextProvider>
-                    <CssBaseline />
-                    <Navbar/>
-                    <main>
-                        <AppRouter />
-                        <ToastContainer />
-                    </main>
-                    <Footer/>
-                </BoardContextProvider>
-            </UserContextProvider>
-        </ThemeSwitcher>
+            <ThemeContextProvider>
+                <UserContextProvider>
+                    <BoardContextProvider>
+                        <CssBaseline />
+                        <Navbar/>
+                        <main>
+                            <AppRouter />
+                            <ToastContainer />
+                        </main>
+                        <Footer/>
+                    </BoardContextProvider>
+                </UserContextProvider>
+            </ThemeContextProvider>
+
 
 
 
