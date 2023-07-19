@@ -2,13 +2,14 @@ import {CSS} from '@dnd-kit/utilities';
 import {useSortable} from '@dnd-kit/sortable';
 import CardComponent from "../card/CardComponent";
 import {CardListResponse} from "../../api/apiModels/CardListResponse";
+import {CardResponse} from "../../api/apiModels/CardResponse";
 interface SortableCardProps {
     id: string;
-    text: string;
+    card: CardResponse;
     cardList: CardListResponse
 }
 
-const SortableCard: React.FC<SortableCardProps> = ({id, text, cardList}) => {
+const SortableCard: React.FC<SortableCardProps> = ({id, card, cardList}) => {
 
     const {
         attributes,
@@ -28,7 +29,7 @@ const SortableCard: React.FC<SortableCardProps> = ({id, text, cardList}) => {
     };
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners} >
-            <CardComponent cardList={cardList} text={text}></CardComponent>
+            <CardComponent cardList={cardList} card={card}></CardComponent>
         </div>
     );
 };

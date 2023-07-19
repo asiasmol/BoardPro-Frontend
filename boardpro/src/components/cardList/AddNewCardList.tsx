@@ -72,7 +72,7 @@ const AddNewCardList = () => {
                 {!showForm && (
                     <Button
                         variant="contained"
-                        color="info"
+                        color="primary"
                         onClick={handleButtonClick}
                         sx={{ width: '18rem', borderRadius: '0.5rem'}}
                     >

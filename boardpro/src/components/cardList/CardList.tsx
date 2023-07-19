@@ -86,7 +86,7 @@ const CardList = ({ cardList }: Props) => {
                                 <SortableCard
                                     key={card.id.toString()}
                                     id={card.id.toString()}
-                                    text={card.title}
+                                    card={card}
                                     cardList={cardList}
                                 />
                             ) : (

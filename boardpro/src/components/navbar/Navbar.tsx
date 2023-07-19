@@ -98,14 +98,14 @@ const Navbar = () => {
                                 </form>
                             </Box>
                         </Menu>
-                        <Button color="inherit" href="/boards">Boards</Button>
-                        <Button color="inherit" onClick={logout}>Logout</Button>
                         <Switch
                             color="warning"
                             checked={checked}
                             onChange={handleChange}
                             inputProps={{ 'aria-label': 'controlled' }}
                         />
+                        <Button color="inherit" href="/boards">Boards</Button>
+                        <Button color="inherit" onClick={logout}>Logout</Button>
                     </> :
                     <>
                         <Button color="inherit" href="/login">Login</Button>

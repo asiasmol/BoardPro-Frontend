@@ -25,7 +25,10 @@ const AddNewCard = ({cardListId}: Props) => {
 
             const newCard: CardResponse = {
                 id:newCardResponse.data.id,
-                title: newCardResponse.data.title};
+                title: newCardResponse.data.title,
+                description: newCardResponse.data.description,
+                executors: newCardResponse.data.executors
+            };
 
             if(context.currentBoard) {
                 const updatedCardList = context.currentBoard.cardLists.map(list => {
