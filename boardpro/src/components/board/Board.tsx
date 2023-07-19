@@ -1,61 +1,52 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {SyntheticEvent, useCallback, useContext, useEffect, useState} from "react";
 import AddNewCardList from "../cardList/AddNewCardList";
 import { BoardContext } from "../../context/BoardContext";
-import {
-    closestCorners,
-    DndContext,
-    DragEndEvent,
-    DragStartEvent,
-    TouchSensor,
-    useSensor,
-    useSensors
-} from "@dnd-kit/core";
+import {closestCorners, DndContext, DragEndEvent, DragStartEvent, TouchSensor, useSensor, useSensors} from "@dnd-kit/core";
 import {CardResponse} from "../../api/apiModels/CardResponse";
 import {rectSortingStrategy, SortableContext, sortableKeyboardCoordinates} from "@dnd-kit/sortable";
 import {CardListResponse} from "../../api/apiModels/CardListResponse";
 import SortableCardList from "./SortableCardList";
 import {KeyboardSensor, MouseSensor} from "../MyPointerSensor";
-import {CustomAppBar} from "./Board.styles";
-import {Avatar, Toolbar, Typography} from "@mui/material";
+import {Container, CustomAppBar, StyledAutocomplete, StyledBox, StyledButton, StyledPersonAddAltIcon} from "./Board.styles";
+import {Avatar, Modal, TextField, Toolbar, Typography} from "@mui/material";
+import {UserResponse} from "../../api/apiModels/UserResponse";
+import {UserApi} from "../../api/UserApi";
+import {toast} from "react-toastify";
+import {ThemeContext} from "../../context/ThemeContext";
+import {BoardApi} from "../../api/BoardApi";
 
 const Board = () => {
+    const [open, setOpen] = React.useState(false);
+    const [users, setUsers] = useState<UserResponse[]>([]);
+    const [userEmail, setUserEmail] = useState<string|undefined>();
     const context = useContext(BoardContext)
+    const theme = useContext(ThemeContext)
     const [cards, setCards] = useState<CardResponse[]>([]);
     const [activeItem, setActiveItem] = useState<CardResponse>()
-    const sensors = useSensors(
-        useSensor(MouseSensor),
-        useSensor(TouchSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        })
-    );
+    const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor), useSensor(KeyboardSensor, {coordinateGetter: sortableKeyboardCoordinates,}));
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
-
         if (!active || !over || active.id === over.id) {
             return;
         }
-
         const originalList = context.currentBoard?.cardLists.find(list => list.cards.some(card => card.id.toString() === active.id));
         if (!originalList) {
             return;
         }
-
         const activeCardIndex = originalList.cards.findIndex(card => card.id !== undefined && card.id.toString() === active.id);
         if (activeCardIndex === -1) {
             return;
         }
-
         const [removedCard] = originalList.cards.splice(activeCardIndex, 1);
         updateListWithNewCards(originalList, originalList.cards);
-
         if (!context.currentBoard?.cardLists){
             return;
         }
-
         let targetList = findCardListContainer(context.currentBoard?.cardLists, over.id as string);
         const overCardIndex = cards.findIndex(card => card.id !== undefined && card.id.toString() === over.id);
-
         if (targetList) {
             if (!targetList.cards.some(card => card.id === removedCard.id)) {
                 if (overCardIndex !== -1) {
@@ -67,7 +58,6 @@ const Board = () => {
             }
             return;
         }
-
         targetList = context.currentBoard?.cardLists.find(list => list.cards.length === 0);
         if (targetList && !targetList.cards.some(card => card.id === removedCard.id)) {
             if (overCardIndex !== -1) {
@@ -78,6 +68,11 @@ const Board = () => {
             updateListWithNewCards(targetList, targetList.cards);
         }
     };
+
+    const handleDragStart = (event: DragStartEvent) => {
+        const { active } = event
+        setActiveItem(cards.find((item) => item.id === active.id))
+    }
 
     const findCardListContainer = (
         cardLists: CardListResponse[],
@@ -95,7 +90,6 @@ const Board = () => {
                     return existingList;
                 }
             });
-            console.log(updatedCardList)
             context.updateCardLists(updatedCardList);
 
             if (context.currentCardList && list.id === context.currentCardList.id) {
@@ -103,14 +97,59 @@ const Board = () => {
             }
         }
     }
-    const handleDragStart = (event: DragStartEvent) => {
-        const { active } = event
-        setActiveItem(cards.find((item) => item.id === active.id))
-    }
+
+    const fetchUsers = useCallback(async () => {
+        try {
+            const response = await UserApi.getAllUsers();
+            setUsers(response.data)
+        } catch {
+            toast.error("Bład serwera")
+        }
+
+    }, []);
+
+    const filterOptions = (options: string[], { inputValue }: { inputValue: string }) =>
+        inputValue.length >= 1
+            ? options.filter((option) =>
+                option.toLowerCase().includes(inputValue.toLowerCase())
+            )
+            : [];
+
+
+    const addUser = async (event: { preventDefault: () => void; }) => {
+        event.preventDefault();
+        try {
+            const newUserResponse = await BoardApi.addUserToBoard({
+                userEmail: userEmail,
+                boardId: context.currentBoard?.id
+            });
+            const newUser: UserResponse = {
+                email: newUserResponse.data.email,
+                firstName: newUserResponse.data.firstName,
+                lastName: newUserResponse.data.lastName
+            };
+            if(context.currentBoard) {
+                const updatedUserList = [...context.currentBoard.users, newUser]
+                context.currentBoardModifier({
+                    ...context.currentBoard,
+                    users: updatedUserList,
+                });
+                setUsers(updatedUserList);
+            }
+            toast.success("Dodano Uzytkownika");
+        } catch {
+            toast.error("Błąd serwera przy dodawaniua uzytkownika");
+        }
+    };
 
     useEffect(() => {
         setCards(context.currentCardList?.cards || []);
     }, [context.currentCardList]);
+
+    useEffect(() => {
+        fetchUsers();
+    }, [fetchUsers])
+
 
     return (
         <>
@@ -119,10 +158,48 @@ const Board = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         {context.currentBoard?.title}
                     </Typography>
+                    <StyledPersonAddAltIcon fontSize={"large"} onClick={handleOpen}/>
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <StyledBox bgcolor={theme.theme.palette.background.paper}>
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                                Dodaj użytkownika
+                            </Typography>
+                                <Container>
+                                    <StyledAutocomplete
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        options={users.map((user) => user.email)}
+                                        renderInput={(params:UserResponse) => <TextField {...params} label="Users" />}
+                                        inputValue={userEmail}
+                                        onInputChange={(event : SyntheticEvent, value : string) => {
+                                            setUserEmail(value);
+                                        }}
+                                        filterOptions={filterOptions}
+                                    />
+                                    <StyledButton type="submit" onClick={addUser} variant="contained">Dodaj</StyledButton>
+                                </Container>
+                            <Typography variant="subtitle1" gutterBottom>
+                                Użytkownicy
+                            </Typography>
+                            {context.currentBoard?.users.map((user, index) => (
+                                <Container key={user.email}>
+                                    <Avatar alt={user.firstName ? user.firstName.toUpperCase() : ''} sx={{ mr: 4 }} src="/static/images/avatar/2.jpg" />
+                                    {user.email}
+                                </Container>
+                            ))}
+                        </StyledBox>
+                    </Modal>
                     {context.currentBoard?.users.map((user, index) => (
-                        <Avatar key={index} alt={user.firstName.toUpperCase()} src="/static/images/avatar/2.jpg" />
+                        <Avatar key={user.email} alt={user.firstName ? user.firstName.toUpperCase() : ''} sx={{ mr: 4 }} src="/static/images/avatar/2.jpg" />
                     ))}
                 </Toolbar>
+
+
             </CustomAppBar>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "start" }}>
                 <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd} onDragStart={handleDragStart}>

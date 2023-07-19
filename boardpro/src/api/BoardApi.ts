@@ -10,4 +10,7 @@ export class BoardApi {
 
     static getBoard = async (param: { boardId: string }) =>
         await authorizedApi.get(`http://localhost:8080/api/board/${param.boardId}`);
+
+    static addUserToBoard = async (param: { userEmail: string | undefined, boardId: number | undefined; }) =>
+        await authorizedApi.patch(`http://localhost:8080/api/board/add-user?userEmail=${param.userEmail}&boardId=${param.boardId}`);
 }
