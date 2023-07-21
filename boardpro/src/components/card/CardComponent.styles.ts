@@ -3,6 +3,7 @@ import {Box, Card, TextareaAutosize, Typography} from "@mui/material";
 
 
 export const StyledCard = styled(Card)`
+  margin: 0.5rem;
   &:hover {
     box-shadow: 0 0 8px rgba(0, 0, 0, 2);
   }
@@ -30,32 +31,17 @@ export const StyledTextareaAutosize = styled(TextareaAutosize)`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 export const Title = styled(Typography)`
-  height: 4rem;
+  margin: 4rem
 `;
 
-export const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 1rem;
+export const StyledBoxLine = styled(Box)`
+  background-color: #333333;
+  m: 1;
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  height: 0.1rem;
 `;
 
-export const ExecutorsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-export const DescriptionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-export const TextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;

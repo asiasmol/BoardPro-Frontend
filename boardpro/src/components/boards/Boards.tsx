@@ -21,7 +21,7 @@ const Boards = () => {
     const context = useContext(BoardContext)
 
     const handleBoardClick = (board: BoardResponse) =>{
-        context.currentBoardModifier({id: board.id, title: board.title, cardLists: board.cardLists, users: board.users})
+        context.currentBoardModifier({id: board.id, title: board.title, cardLists: board.cardLists, users: board.users, owner: board.owner})
         navigate(`/board/${board.id}`)
     }
 

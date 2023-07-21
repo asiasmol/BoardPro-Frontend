@@ -13,7 +13,7 @@ interface Props {
 }
 
 
-const CardList = ({ cardList }: Props) => {
+const CardList = ({cardList}: Props) => {
     const context = useContext(BoardContext)
     const [isEditing, setIsEditing] = useState(false);
     const [newTitle, setNewTitle] = useState(cardList.title);
@@ -33,7 +33,7 @@ const CardList = ({ cardList }: Props) => {
                 title: newTitle
             }, context.currentBoard?.id, cardList.id);
 
-            if(context.currentBoard) {
+            if (context.currentBoard) {
                 const updatedCardList = context.currentBoard.cardLists.map(list => {
                     if (list.id === cardList.id) {
                         return {...list, title: newTitle};
@@ -90,14 +90,14 @@ const CardList = ({ cardList }: Props) => {
                                     cardList={cardList}
                                 />
                             ) : (
-                                <React.Fragment key={`fragment-${index}`} />
+                                <React.Fragment key={`fragment-${index}`}/>
                             )
                         )}
                         {/* </SortableContext> */}
                     </CardContent>
 
                     <CardActions data-no-dnd="true">
-                        <AddNewCard cardListId={cardList.id} data-no-dnd="true" />
+                        <AddNewCard cardListId={cardList.id} data-no-dnd="true"/>
                     </CardActions>
                 </StyledCard>
             </Container>

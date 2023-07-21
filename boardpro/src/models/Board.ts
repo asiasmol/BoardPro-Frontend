@@ -6,4 +6,5 @@ export type  Board = {
     title: string;
     cardLists: CardListResponse[] | [];
     users: UserResponse[] | [];
+    owner: UserResponse
 }

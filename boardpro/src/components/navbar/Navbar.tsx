@@ -6,13 +6,9 @@ import {BoardApi} from "../../api/BoardApi";
 import {UserContext} from "../../context/UserContext";
 import * as React from 'react';
 import {
-    AppBar,
     Box,
     Button,
-    FormControlLabel,
-    FormGroup,
     Menu,
-    styled,
     Switch,
     TextField,
     Toolbar,
