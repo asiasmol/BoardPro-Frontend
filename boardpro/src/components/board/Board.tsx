@@ -142,10 +142,10 @@ const Board = () => {
     };
 
     const handleDragStart = (event: DragStartEvent) => {
-        setIsDragging(true)
-        context.isDraggingModifier(true)
-        const { active } = event
-        setActiveItem(cards.find((item) => item.id === active.id))
+        setIsDragging(true);
+        context.isDraggingModifier(true);
+        const { active } = event;
+        setActiveItem(cards.find((item) => item.id === active.id));
     }
 
 

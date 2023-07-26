@@ -1,10 +1,20 @@
 import React, {useContext, useState} from "react";
 import {Avatar, CardContent, Modal, Typography} from "@mui/material";
-import {Container, StyledBox, StyledCard, StyledTextareaAutosize, Title, StyledBoxLine} from "./CardComponent.styles";
+import {
+    Container,
+    StyledBox,
+    StyledCard,
+    StyledTextareaAutosize,
+    Title,
+    StyledBoxLine,
+    StyledCardContent
+} from "./CardComponent.styles";
 import {CardListResponse} from "../../api/apiModels/CardListResponse";
 import {BoardContext} from "../../context/BoardContext";
 import {CardResponse} from "../../api/apiModels/CardResponse";
 import {ThemeContext} from "../../context/ThemeContext";
+import MenuIcon from '@mui/icons-material/Menu';
+
 
 
 interface Props {
@@ -31,11 +41,9 @@ const CardComponent = ({card, cardList}: Props) => {
             context.currentCardModifier(card)
         }
     }
-
     return (
         <>
             <StyledCard
-                onDoubleClick={handleOpen}
                 onMouseEnter={() => {
                     setHover(true);
                     setCurrentCardList();
@@ -45,9 +53,12 @@ const CardComponent = ({card, cardList}: Props) => {
                 hover={hover.toString()}
 
             >
-                <CardContent >
+                <StyledCardContent >
                     <Typography fontSize={"medium"}>{card.title}</Typography>
-                </CardContent>
+                    {hover && (
+                        <MenuIcon onClick={handleOpen} data-no-dnd="true" />
+                    )}
+                </StyledCardContent>
             </StyledCard>
 
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title"

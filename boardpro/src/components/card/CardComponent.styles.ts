@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Box, Card, TextareaAutosize, Typography} from "@mui/material";
+import {Box, Card, CardContent, TextareaAutosize, Typography} from "@mui/material";
 
 
 export const StyledCard = styled(Card)`
@@ -45,3 +45,9 @@ export const StyledBoxLine = styled(Box)`
   height: 0.1rem;
 `;
 
+
+export const StyledCardContent = styled(CardContent)`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
