@@ -24,7 +24,6 @@ const CardList = ({cardList}: Props) => {
 
     const handleInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setNewTitle(event.target.value);
-        console.log(event)
     };
 
     const handleBlur = async () => {

@@ -1,11 +1,15 @@
 import {Board} from "./Board";
 import {CardListResponse} from "../api/apiModels/CardListResponse";
-import {UserResponse} from "../api/apiModels/UserResponse";
+import {CardResponse} from "../api/apiModels/CardResponse";
 
-export type  BoardContextType = {
+export type BoardContextType = {
     currentBoard: Board | null
-    currentBoardModifier: (board: Board | null ) => void
     currentCardList: CardListResponse | null
-    currentCardListModifier: (cardList: CardListResponse | null ) => void
+    currentCard: CardResponse | null
+    isDragging: boolean
+    currentBoardModifier: (board: Board | null) => void
     updateCardLists: (newCardLists: CardListResponse[]) => void
+    currentCardListModifier: (cardList: CardListResponse | null) => void
+    currentCardModifier: (card: CardResponse | null) => void
+    isDraggingModifier: (isDragging: boolean) => void
 }

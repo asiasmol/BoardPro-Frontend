@@ -16,31 +16,38 @@ const CardComponent = ({card, cardList}: Props) => {
 
     const context = useContext(BoardContext)
     const theme = useContext(ThemeContext)
-    const [hover, setHover] = useState("false");
-    const setCurrentCardList = () => {
-        context.currentCardListModifier(cardList)
-    }
-    const [open, setOpen] = React.useState(false);
+    const [hover, setHover] = useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const handleModalClose = (event: React.MouseEvent<Document, MouseEvent>) => {
-        if (event.target === event.currentTarget) {
-            handleClose();
+    const setCurrentCardList = () => {
+            context.currentCardListModifier(cardList)
+    }
+    const setCurrentCard = () => {
+        if (context.isDragging) {
+            context.currentCardModifier(card)
         }
     }
 
     return (
         <>
-            <StyledCard onMouseEnter={() => {
-                setHover("true");
-                setCurrentCardList();
-            }} onMouseLeave={() => setHover("false")} hover={hover} color="primary">
+            <StyledCard
+                onDoubleClick={handleOpen}
+                onMouseEnter={() => {
+                    setHover(true);
+                    setCurrentCardList();
+                    setCurrentCard();
+                }}
+                onMouseLeave={() => setHover(false)}
+                hover={hover}
+
+            >
                 <CardContent onDoubleClick={handleOpen}>
                     <Typography fontSize={"medium"}>{card.title}</Typography>
                 </CardContent>
             </StyledCard>
-            <Modal open={open} onClose={handleModalClose} aria-labelledby="modal-modal-title"
+
+            <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title"
                    aria-describedby="modal-modal-description" data-no-dnd="true">
                 <StyledBox bgcolor={theme.theme.palette.background.paper}>
                     <Container>
