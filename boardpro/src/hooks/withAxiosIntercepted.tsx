@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import {useContext, useEffect, useState} from "react";
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { ACCESS_TOKEN } from "../constants/constants";
 import { useNavigate } from "react-router-dom";
+import {UserContext} from "../context/UserContext";
 
 
 // pokazać najpierw na dwóch komponentach z route i console logu w useEffect - kompozycja pozwalająca przekształcić komponent
@@ -15,6 +16,8 @@ export function withAxiosIntercepted<T extends JSX.IntrinsicAttributes>(
     return function AxiosIntercepted(props: T) {
         const navigate = useNavigate();
         const [isInitialized, setIsInitialized] = useState<boolean>(false);
+        const {currentUserModifier} = useContext(UserContext);
+
 
         useEffect(() => {
             axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
@@ -43,6 +46,9 @@ export function withAxiosIntercepted<T extends JSX.IntrinsicAttributes>(
                 },
                 (error) => {
                     if (error.response.status === 401) {
+                        currentUserModifier(null);
+                        localStorage.removeItem('ACCESS_TOKEN')
+                        localStorage.removeItem("currentUser")
                         navigate("/login");
                     }
 

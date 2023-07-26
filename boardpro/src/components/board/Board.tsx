@@ -1,4 +1,4 @@
-import React, {SyntheticEvent, useCallback, useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import AddNewCardList from "../cardList/AddNewCardList";
 import { BoardContext } from "../../context/BoardContext";
 import {closestCorners, DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, TouchSensor, useSensor, useSensors} from "@dnd-kit/core";
@@ -17,12 +17,6 @@ const Board = () => {
     const [activeItem, setActiveItem] = useState<CardResponse>()
     const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor), useSensor(KeyboardSensor, {coordinateGetter: sortableKeyboardCoordinates,}));
     const [isDragging, setIsDragging] = useState(false);
-    const [dragChanges, setDragChanges] = useState<{
-        activeList: CardListResponse | null;
-        overList: CardListResponse | null;
-        activeIndex: number;
-        overIndex: number;
-    } | null>(null);
 
 
     const handleDragEnd = (event: DragEndEvent) => {
@@ -97,69 +91,60 @@ const Board = () => {
                     return existingList;
                 }
             });
-
             context.updateCardLists(updatedCardList);
-
             if (context.currentCardList && list.id === context.currentCardList.id) {
                 context.currentCardListModifier({...context.currentCardList, cards: newCards});
             }
         }
     }
     const handleDragOver = ({ active, over }: DragOverEvent) => {
-        if (context.currentBoard?.cardLists) {
-            const activeList = findCardListContainer(context.currentBoard.cardLists, active.id as string);
-            const overList = over ? findCardListContainer(context.currentBoard.cardLists, over.id as string) : null;
-            console.log(overList)
-
-            if (!activeList || !overList || activeList === overList) {
-                return;
+        if (!context.currentBoard?.cardLists) {
+            return;
+        }
+        const activeList = findCardListContainer(context.currentBoard.cardLists, active.id as string);
+        if (!activeList) {
+            return;
+        }
+        let overList = over ? findCardListContainer(context.currentBoard.cardLists, over.id as string) : null;
+        if (!overList) {
+            overList = context.currentBoard.cardLists.find(list => list.cards.length === 0);
+        }
+        if (!overList || activeList === overList) {
+            return;
+        }
+        const activeIndex = activeList.cards.findIndex(card => card.id !== undefined && card.id.toString() === active.id);
+        if (activeIndex === -1) {
+            return;
+        }
+        const removedCard = activeList.cards[activeIndex];
+        const newActiveListCards = [...activeList.cards.filter((_, index) => index !== activeIndex)];
+        const overIndex = over ? overList.cards.findIndex(card => card.id !== undefined && card.id.toString() === over.id) : overList.cards.length;
+        const newOverListCards = [
+            ...overList.cards.slice(0, overIndex),
+            removedCard,
+            ...overList.cards.slice(overIndex)
+        ];
+        const updatedActiveList = { ...activeList, cards: newActiveListCards };
+        const updatedOverList = { ...overList, cards: newOverListCards };
+        const updatedCardList = context.currentBoard.cardLists.map(existingList => {
+            if (existingList.id === activeList.id) {
+                return updatedActiveList;
+            } else if (overList && existingList.id === overList.id) {
+                return updatedOverList;
+            } else {
+                return existingList;
             }
-
-            const activeIndex = activeList.cards.findIndex(card => card.id !== undefined && card.id.toString() === active.id);
-            if (over) {
-                const overIndex = overList.cards.findIndex(card => card.id !== undefined && card.id.toString() === over.id);
-
-                if (activeIndex === -1 || overIndex === -1) {
-                    return;
-                }
-
-                const removedCard = activeList.cards[activeIndex];
-                const newActiveListCards = [...activeList.cards.filter((_, index) => index !== activeIndex)];
-
-                const newOverListCards = [
-                    ...overList.cards.slice(0, overIndex),
-                    removedCard,
-                    ...overList.cards.slice(overIndex)
-                ];
-
-                // Prepare updated lists
-                const updatedActiveList = { ...activeList, cards: newActiveListCards };
-                const updatedOverList = { ...overList, cards: newOverListCards };
-
-                // Prepare updated cardLists for the entire board
-                const updatedCardList = context.currentBoard.cardLists.map(existingList => {
-                    if (existingList.id === activeList.id) {
-                        return updatedActiveList;
-                    } else if (existingList.id === overList.id) {
-                        return updatedOverList;
-                    } else {
-                        return existingList;
-                    }
-                });
-
-                // Finally, update the state
-                context.updateCardLists(updatedCardList);
-                if (context.currentCardList && (activeList.id === context.currentCardList.id || overList.id === context.currentCardList.id)) {
-                    context.currentCardListModifier(updatedActiveList.id === context.currentCardList.id ? updatedActiveList : updatedOverList);
-                }
-            }
+        });
+        context.updateCardLists(updatedCardList);
+        if (context.currentCardList && (activeList.id === context.currentCardList.id || overList.id === context.currentCardList.id)) {
+            context.currentCardListModifier(updatedActiveList.id === context.currentCardList.id ? updatedActiveList : updatedOverList);
         }
     };
+
     const handleDragStart = (event: DragStartEvent) => {
         setIsDragging(true)
         context.isDraggingModifier(true)
         const { active } = event
-        console.log(active.id)
         setActiveItem(cards.find((item) => item.id === active.id))
     }
 

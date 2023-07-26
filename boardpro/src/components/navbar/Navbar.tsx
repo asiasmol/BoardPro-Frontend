@@ -55,6 +55,7 @@ const Navbar = () => {
     const logout = useCallback(() => {
         currentUserModifier(null);
         localStorage.removeItem('ACCESS_TOKEN')
+        localStorage.removeItem("currentUser")
         navigate("/");
     }, [navigate])
 

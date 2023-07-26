@@ -79,7 +79,6 @@ const CardList = ({cardList}: Props) => {
                     />
 
                     <CardContent>
-                        {/* <SortableContext items={cards.map(card => card.id.toString())} strategy={rectSortingStrategy}> */}
                         {cards.map((card, index) =>
                             card.id ? (
                                 <SortableCard
@@ -92,7 +91,6 @@ const CardList = ({cardList}: Props) => {
                                 <React.Fragment key={`fragment-${index}`}/>
                             )
                         )}
-                        {/* </SortableContext> */}
                     </CardContent>
 
                     <CardActions data-no-dnd="true">

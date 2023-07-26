@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {Avatar, Box, CardContent, Modal, Typography} from "@mui/material";
+import {Avatar, CardContent, Modal, Typography} from "@mui/material";
 import {Container, StyledBox, StyledCard, StyledTextareaAutosize, Title, StyledBoxLine} from "./CardComponent.styles";
 import {CardListResponse} from "../../api/apiModels/CardListResponse";
 import {BoardContext} from "../../context/BoardContext";
@@ -16,15 +16,18 @@ const CardComponent = ({card, cardList}: Props) => {
 
     const context = useContext(BoardContext)
     const theme = useContext(ThemeContext)
-    const [hover, setHover] = useState(false);
+    const [hover, setHover] = useState(false );
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setOpen(true);
+        console.log(open)
+    }
     const handleClose = () => setOpen(false);
     const setCurrentCardList = () => {
             context.currentCardListModifier(cardList)
     }
     const setCurrentCard = () => {
-        if (context.isDragging) {
+        if (!context.isDragging) {
             context.currentCardModifier(card)
         }
     }
@@ -39,10 +42,10 @@ const CardComponent = ({card, cardList}: Props) => {
                     setCurrentCard();
                 }}
                 onMouseLeave={() => setHover(false)}
-                hover={hover}
+                hover={hover.toString()}
 
             >
-                <CardContent onDoubleClick={handleOpen}>
+                <CardContent >
                     <Typography fontSize={"medium"}>{card.title}</Typography>
                 </CardContent>
             </StyledCard>
