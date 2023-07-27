@@ -32,7 +32,7 @@ export const StyledPersonAddAltIcon = styled(PersonAddAltIcon)`
 export const Container = styled(Box)`
   display: flex;
   align-items: center;
-  margin: 1rem;
+  //margin: 1rem;
 `;
 
 export const StyledAutocomplete = styled(Autocomplete)`

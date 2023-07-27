@@ -165,9 +165,9 @@ const Board = () => {
                             ? context.currentBoard.cardLists.flatMap(cardList => cardList.cards.map(card => card.id.toString()))
                             : []
                     } strategy={verticalListSortingStrategy}>
-                        <div style={{ display: 'flex', gap: '1rem' }}>
+                        <div style={{ display: 'flex'}}>
                             {context.currentBoard?.cardLists.sort((a, b) => a.id - b.id).map((cardList, index) => (
-                            <div key={`div-${cardList.id}`}>
+                            <div key={`div-${cardList.id}`} style={{ margin: '-1rem'}}>
                                 {
                                     context.isDragging ?
                                         <SortableCardList cardList={cardList} key={cardList.id}/> :
