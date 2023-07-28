@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {Avatar, Modal, Typography} from "@mui/material";
+import {Avatar, Box, Button, Menu, MenuItem, Modal, Typography} from "@mui/material";
 import {
     Container,
     StyledBox,
@@ -12,7 +12,8 @@ import {
     ListTypography,
     StyledCloseIcon,
     StyledTextField,
-    StyledCDeleteForeverIcon
+    StyledCDeleteForeverIcon,
+    StyledAddButton
 } from "./CardComponent.styles";
 import {CardListResponse} from "../../api/apiModels/CardListResponse";
 import { CardApi } from "../../api/CardApi";
@@ -24,6 +25,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SubtitlesIcon from '@mui/icons-material/Subtitles';
 import CommentIcon from '@mui/icons-material/Comment';
 import PeopleIcon from '@mui/icons-material/People';
+import {UserResponse} from "../../api/apiModels/UserResponse";
+import AddIcon from '@mui/icons-material/Add';
 
 
 
@@ -43,6 +46,7 @@ const CardComponent = ({card, cardList}: Props) => {
     const [isEditingDescription, setIsEditingDescription] = useState(false);
     const [newTitle, setNewTitle] = useState(card.title);
     const [newDescription, setNewDescription] = useState(card.description)
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const handleInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => setNewTitle(event.target.value);
     const handleDescriptionChange = (event: { target: { value: React.SetStateAction<string>; }; }) => setNewDescription(event.target.value);
     const handleOpen = () => setOpen(true);
@@ -50,6 +54,58 @@ const CardComponent = ({card, cardList}: Props) => {
     const handleDescriptionClick = () => setIsEditingDescription(true);
     const handleClose = () => setOpen(false);
     const setCurrentCardList = () => context.currentCardListModifier(cardList);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault()
+        setAnchorEl(event.currentTarget);
+        console.log(event.currentTarget)
+    };
+    const handleCloseUserMenu = (user: UserResponse) => {
+        addUser(user)
+        setAnchorEl(null);
+    };
+
+    const addUser = async (user: UserResponse) => {
+        try {
+            const newUserResponse = await CardApi.addUser({
+                cardId: card.id,
+                cardListId: cardList.id,
+                boardId: context.currentBoard?.id,
+                userEmail: user.email,
+            });
+            const newUser: UserResponse = {
+                email: newUserResponse.data.email,
+                firstName: newUserResponse.data.firstName,
+                lastName: newUserResponse.data.lastName
+            };
+
+            if(context.currentBoard) {
+                const updatedCardLists = context.currentBoard.cardLists.map(cardList => {
+                    return {
+                        ...cardList,
+                        cards: cardList.cards.map(cardInList => {
+                            if (cardInList.id === card.id) {
+                                return {
+                                    ...cardInList,
+                                    executors: [...cardInList.executors, newUser],
+                                };
+                            }
+                            return cardInList;
+                        }),
+                    };
+                });
+
+                context.currentBoardModifier({
+                    ...context.currentBoard,
+                    cardLists: updatedCardLists,
+                });
+            }
+            toast.success("Dodano Uzytkownika");
+        } catch {
+
+            toast.error("Błąd serwera przy dodawaniua uzytkownika");
+        }
+
+    };
     const setCurrentCard = () => {
         if (!context.isDragging) {
             context.currentCardModifier(card)
@@ -136,10 +192,28 @@ const CardComponent = ({card, cardList}: Props) => {
             >
                 <StyledCardContent >
                     <Typography fontSize={"medium"}>{card.title}</Typography>
+                    <div
+                        className="card-executors"
+                    >
+                        {card.executors.map((user, userIndex) => (
+                            <Avatar
+                                key={user.email}
+                                alt={user.firstName ? user.firstName.toUpperCase() : ''}
+                                sx={{
+                                    width: 24,
+                                    height: 24,
+                                    marginRight: 2
+                                }}
+                                src="/static/images/avatar/2.jpg"
+                            />
+                        ))}
+                    </div>
                     {hover && (
                         <MenuIcon onClick={handleOpen} data-no-dnd="true" />
                     )}
                 </StyledCardContent>
+
+
             </StyledCard>
 
 
@@ -182,14 +256,26 @@ const CardComponent = ({card, cardList}: Props) => {
                             <Typography>
                                 Użytkownicy
                             </Typography>
+                            <StyledAddButton onClick={handleClick} color={"secondary"}>
+                                <AddIcon />
+                            </StyledAddButton>
                         </TitleContainer>
-                        {/*{card.executors.map((user, index) => (*/}
-                        {/*    <Avatar key={index} alt={user.firstName.toUpperCase()} src="/static/images/avatar/2.jpg"/>*/}
-                        {/*))}*/}
                         <BodyContainer>
-                            <ListTypography fontSize={"small"} id="modal-modal-description">
-                                tu bedą uzytkownicy :)
-                            </ListTypography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', mt: 2, mb: 2 }}>
+                                {card.executors.map((user, index) => (
+                                    <Avatar key={index} alt={user.firstName ? user.firstName.toUpperCase(): ''} src="/static/images/avatar/2.jpg" />
+                                ))}
+                                <Menu
+                                    id="simple-menu"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                >
+                                    {context.currentBoard?.users.map((user) => (
+                                        <MenuItem data-no-dnd="true" key={user.email} onClick={() => handleCloseUserMenu(user)}>{user.email}</MenuItem>
+                                    ))}
+                                </Menu>
+                            </Box>
                         </BodyContainer>
                         <TitleContainer>
                                 <CommentIcon fontSize={"large"}/>

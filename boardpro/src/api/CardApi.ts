@@ -34,4 +34,6 @@ export class CardApi {
             },
         });
 
+    static addUser = async (param: { cardId: number | undefined,  cardListId: number | undefined, boardId: number | undefined, userEmail: string | undefined; }) =>
+        await authorizedApi.patch(`http://localhost:8080/api/card/add-executors?cardId=${param.cardId}&boardId=${param.boardId}&cardListId=${param.cardListId}&userEmail=${param.userEmail}`);
 }

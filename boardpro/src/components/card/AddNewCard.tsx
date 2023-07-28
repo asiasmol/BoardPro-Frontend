@@ -29,7 +29,7 @@ const AddNewCard = ({cardListId}: Props) => {
                 id:newCardResponse.data.id,
                 title: newCardResponse.data.title,
                 description: newCardResponse.data.description,
-                executors: newCardResponse.data.executors
+                executors: newCardResponse.data.executors,
             };
 
             if(context.currentBoard) {
