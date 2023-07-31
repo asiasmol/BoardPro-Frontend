@@ -5,11 +5,12 @@ import {BoardContext} from "../../context/BoardContext";
 import {CardResponse} from "../../api/apiModels/CardResponse";
 import {Box, Grid, Button} from "@mui/material";
 import {StyledTextField} from "./AddNewCard.styles";
+import {CardListResponse} from "../../api/apiModels/CardListResponse";
 
 interface Props{
-    cardListId: number
+    cardList: CardListResponse
 }
-const AddNewCard = ({cardListId}: Props) => {
+const AddNewCard = ({cardList}: Props) => {
 
     const [showForm, setShowForm] = useState(false);
     const [title, setTitle] = useState('');
@@ -21,20 +22,22 @@ const AddNewCard = ({cardListId}: Props) => {
         try {
             const newCardResponse = await CardApi.createCard({
                 title: title,
-                cardListId: cardListId,
+                cardListId: cardList.id,
                 description: null,
-            }, context.currentBoard?.id, cardListId);
+            }, context.currentBoard?.id, cardList.id);
 
             const newCard: CardResponse = {
                 id:newCardResponse.data.id,
                 title: newCardResponse.data.title,
                 description: newCardResponse.data.description,
                 executors: newCardResponse.data.executors,
+                orderNumber: newCardResponse.data.orderNumber,
+                cardList: cardList
             };
 
             if(context.currentBoard) {
                 const updatedCardList = context.currentBoard.cardLists.map(list => {
-                    if (list.id === cardListId) {
+                    if (list.id === cardList.id) {
                         return {...list, cards: [...list.cards, newCard]};
                     }
                     else return list

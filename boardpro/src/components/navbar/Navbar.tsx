@@ -45,7 +45,8 @@ const Navbar = () => {
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault()
         await BoardApi.createBoard({
-            title: title
+            title: title,
+            cardLists: []
         })
         toast.success("Utworzono Tablice");
         navigate("/boards")

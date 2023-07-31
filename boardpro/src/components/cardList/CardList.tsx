@@ -79,22 +79,15 @@ const CardList = ({cardList}: Props) => {
                     />
 
                     <CardContent>
-                        {cards.map((card, index) =>
-                            card.id ? (
-                                <SortableCard
-                                    key={card.id.toString()}
-                                    id={card.id.toString()}
-                                    card={card}
-                                    cardList={cardList}
-                                />
-                            ) : (
-                                <React.Fragment key={`fragment-${index}`}/>
-                            )
-                        )}
+                        {cards.sort((a, b) => a.orderNumber - b.orderNumber).map((card, index) => (
+                            card.id
+                                ? <SortableCard key={card.id.toString()} id={card.id.toString()} cardList={cardList} card={card}/>
+                                : <></>
+                        ))}
                     </CardContent>
 
                     <CardActions data-no-dnd="true">
-                        <AddNewCard cardListId={cardList.id} data-no-dnd="true"/>
+                        <AddNewCard cardList={cardList} data-no-dnd="true"/>
                     </CardActions>
                 </StyledCard>
             </Container>

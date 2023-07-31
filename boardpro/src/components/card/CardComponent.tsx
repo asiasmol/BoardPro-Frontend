@@ -141,7 +141,8 @@ const CardComponent = ({card, cardList}: Props) => {
             await CardApi.updateCard({
                 title: newTitle,
                 cardListId: cardList.id,
-                description: newDescription
+                description: newDescription,
+                orderNumber: card.orderNumber
             }, card.id, context.currentBoard?.id, cardList.id);
 
             if(context.currentBoard) {
