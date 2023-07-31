@@ -9,7 +9,7 @@ import {AppRouter} from "./router/AppRouter";
 import {UserContextProvider} from "./context/UserContext";
 import {BoardContextProvider} from "./context/BoardContext";
 import {CssBaseline} from "@mui/material";
-import {ThemeContext, ThemeContextProvider} from "./context/ThemeContext";
+import {ThemeContextProvider} from "./context/ThemeContext";
 
 function App() {
 
@@ -28,10 +28,6 @@ function App() {
                     </BoardContextProvider>
                 </UserContextProvider>
             </ThemeContextProvider>
-
-
-
-
 
     );
 }

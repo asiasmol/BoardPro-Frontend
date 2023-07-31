@@ -21,39 +21,61 @@ const Board = () => {
     const [isDragging, setIsDragging] = useState(false);
     const [previousList, setPreviousList] = useState<CardListResponse | null>(null);
 
-
-    const swapCards = async (cards: CardResponse[], cardList: CardListResponse) => {
-        console.log(cards)
-        const requests: CardSwapRequest[] = cards.map(card => ({
-            id: card.id,
-            cardListId: cardList.id,
-            orderNumber: card.orderNumber
-        }));
-
-        await CardApi.swapCard(requests, context.currentBoard?.id);
+    const handleDragStart = (event: DragStartEvent) => {
+        setIsDragging(true)
+        context.isDraggingModifier(true)
+        const { active } = event
+        setActiveItem(cards.find((item) => item.id === active.id))
+        if(context.currentBoard) {
+            const currentList = findCardListContainer(context.currentBoard?.cardLists, event.active.id as string);
+            if(currentList) {
+                setPreviousList(currentList);
+            }
+        }
     }
-
-
-    // const updateBoard = async () => {
-    //     try {
-    //         if (context.currentBoard) {
-    //             const cardLists = context.currentBoard.cardLists
-    //             console.log(cardLists)
-    //             const boardRequest: BoardRequest = {
-    //                 title: context.currentBoard.title,
-    //                 cardLists: cardLists
-    //             }
-    //
-    //             await BoardApi.updateBoard(boardRequest, context.currentBoard.id);
-    //
-    //             toast.success("Board updated successfully");
-    //         }
-    //     } catch (error) {
-    //         toast.error("Something went wrong");
-    //     }
-    // }
-
-
+    const handleDragOver = ({ active, over }: DragOverEvent) => {
+        if (!context.currentBoard?.cardLists) {
+            return;
+        }
+        const activeList = findCardListContainer(context.currentBoard.cardLists, active.id as string);
+        if (!activeList) {
+            return;
+        }
+        let overList = over ? findCardListContainer(context.currentBoard.cardLists, over.id as string) : null;
+        if (!overList) {
+            overList = context.currentBoard.cardLists.find(list => list.cards.length === 0);
+        }
+        if (!overList || activeList === overList) {
+            return;
+        }
+        const activeIndex = activeList.cards.findIndex(card => card.id !== undefined && card.id.toString() === active.id);
+        if (activeIndex === -1) {
+            return;
+        }
+        const removedCard = activeList.cards[activeIndex];
+        const newActiveListCards = [...activeList.cards.filter((_, index) => index !== activeIndex)];
+        const overIndex = over ? overList.cards.findIndex(card => card.id !== undefined && card.id.toString() === over.id) : overList.cards.length;
+        const newOverListCards = [
+            ...overList.cards.slice(0, overIndex),
+            removedCard,
+            ...overList.cards.slice(overIndex)
+        ];
+        const updatedActiveList = { ...activeList, cards: newActiveListCards };
+        const updatedOverList = { ...overList, cards: newOverListCards };
+        const updatedCardList = context.currentBoard.cardLists.map(existingList => {
+            if (existingList.id === activeList.id) {
+                return updatedActiveList;
+            } else if (overList && existingList.id === overList.id) {
+                return updatedOverList;
+            } else {
+                return existingList;
+            }
+        });
+        context.updateCardLists(updatedCardList);
+        if (context.currentCardList && (activeList.id === context.currentCardList.id || overList.id === context.currentCardList.id)) {
+            context.currentCardListModifier(updatedActiveList.id === context.currentCardList.id ? updatedActiveList : updatedOverList);
+        }
+    };
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
 
@@ -159,14 +181,16 @@ const Board = () => {
             updateListWithNewCards(targetList, targetList.cards);
         }
     };
+    const swapCards = async (cards: CardResponse[], cardList: CardListResponse) => {
+        console.log(cards)
+        const requests: CardSwapRequest[] = cards.map(card => ({
+            id: card.id,
+            cardListId: cardList.id,
+            orderNumber: card.orderNumber
+        }));
 
-    const findCardListContainer = (
-        cardLists: CardListResponse[],
-        id: string
-    ) => {
-        return cardLists.find((list) => list.cards.some((card) => card.id.toString() === id));
-    };
-
+        await CardApi.swapCard(requests, context.currentBoard?.id);
+    }
     const updateListWithNewCards = (list: CardListResponse, newCards: CardResponse[]) => {
         if (context.currentBoard) {
             const updatedCardList = context.currentBoard.cardLists.map(existingList => {
@@ -182,63 +206,31 @@ const Board = () => {
             }
         }
     }
-    const handleDragOver = ({ active, over }: DragOverEvent) => {
-        if (!context.currentBoard?.cardLists) {
-            return;
-        }
-        const activeList = findCardListContainer(context.currentBoard.cardLists, active.id as string);
-        if (!activeList) {
-            return;
-        }
-        let overList = over ? findCardListContainer(context.currentBoard.cardLists, over.id as string) : null;
-        if (!overList) {
-            overList = context.currentBoard.cardLists.find(list => list.cards.length === 0);
-        }
-        if (!overList || activeList === overList) {
-            return;
-        }
-        const activeIndex = activeList.cards.findIndex(card => card.id !== undefined && card.id.toString() === active.id);
-        if (activeIndex === -1) {
-            return;
-        }
-        const removedCard = activeList.cards[activeIndex];
-        const newActiveListCards = [...activeList.cards.filter((_, index) => index !== activeIndex)];
-        const overIndex = over ? overList.cards.findIndex(card => card.id !== undefined && card.id.toString() === over.id) : overList.cards.length;
-        const newOverListCards = [
-            ...overList.cards.slice(0, overIndex),
-            removedCard,
-            ...overList.cards.slice(overIndex)
-        ];
-        const updatedActiveList = { ...activeList, cards: newActiveListCards };
-        const updatedOverList = { ...overList, cards: newOverListCards };
-        const updatedCardList = context.currentBoard.cardLists.map(existingList => {
-            if (existingList.id === activeList.id) {
-                return updatedActiveList;
-            } else if (overList && existingList.id === overList.id) {
-                return updatedOverList;
-            } else {
-                return existingList;
-            }
-        });
-        context.updateCardLists(updatedCardList);
-        if (context.currentCardList && (activeList.id === context.currentCardList.id || overList.id === context.currentCardList.id)) {
-            context.currentCardListModifier(updatedActiveList.id === context.currentCardList.id ? updatedActiveList : updatedOverList);
-        }
+    const findCardListContainer = (
+        cardLists: CardListResponse[],
+        id: string
+    ) => {
+        return cardLists.find((list) => list.cards.some((card) => card.id.toString() === id));
     };
 
-    const handleDragStart = (event: DragStartEvent) => {
-        setIsDragging(true)
-        context.isDraggingModifier(true)
-        const { active } = event
-        setActiveItem(cards.find((item) => item.id === active.id))
-        if(context.currentBoard) {
-            const currentList = findCardListContainer(context.currentBoard?.cardLists, event.active.id as string);
-            if(currentList) {
-                setPreviousList(currentList);
-            }
-        }
-    }
-
+    // const updateBoard = async () => {
+    //     try {
+    //         if (context.currentBoard) {
+    //             const cardLists = context.currentBoard.cardLists
+    //             console.log(cardLists)
+    //             const boardRequest: BoardRequest = {
+    //                 title: context.currentBoard.title,
+    //                 cardLists: cardLists
+    //             }
+    //
+    //             await BoardApi.updateBoard(boardRequest, context.currentBoard.id);
+    //
+    //             toast.success("Board updated successfully");
+    //         }
+    //     } catch (error) {
+    //         toast.error("Something went wrong");
+    //     }
+    // }
 
     useEffect(() => {
         setCards(context.currentCardList?.cards || []);

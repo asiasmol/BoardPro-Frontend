@@ -4,6 +4,7 @@ import Signup from "../components/signup/Signup";
 import Login from "../components/login/Login";
 import Boards from "../components/boards/Boards";
 import Board from "../components/board/Board"
+import {ProtectedRoute} from "./ProtectedRoute";
 
 export const AppRouter = () => {
 
@@ -12,8 +13,16 @@ export const AppRouter = () => {
                 <Route path='/' element={<Home/>}/>
                 <Route path='/signup' element={<Signup/>}/>
                 <Route path='/login' element={<Login/>}/>
-                <Route path='/boards' element={<Boards/>}/>
-                <Route path='/board/:id' element={<Board/>}/>
+                <Route path='/boards' element={
+                    <ProtectedRoute>
+                        <Boards/>
+                    </ProtectedRoute>
+                }/>
+                <Route path='/board/:id' element={
+                    <ProtectedRoute>
+                        <Board/>
+                    </ProtectedRoute>
+                }/>
             </Routes>
     );
 };
