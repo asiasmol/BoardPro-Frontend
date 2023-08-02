@@ -44,3 +44,14 @@ export const StyledButton = styled(Button)`
   width: 8rem;
   height: 3.5rem;
 `;
+
+export const Body = styled.div<{ backgroundImage: string }>`
+background-image:url(${props => props.backgroundImage});
+background-size: cover;
+background-repeat: no-repeat;
+background-attachment: fixed;
+height: 100vh;
+opacity: 1;
+position: relative;
+z-index: 0;`
+;

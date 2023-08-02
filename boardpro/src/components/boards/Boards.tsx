@@ -21,7 +21,7 @@ const Boards = () => {
     const context = useContext(BoardContext)
 
     const handleBoardClick = (board: BoardResponse) =>{
-        context.currentBoardModifier({id: board.id, title: board.title, cardLists: board.cardLists, users: board.users, owner: board.owner})
+        context.currentBoardModifier({id: board.id, title: board.title, cardLists: board.cardLists, users: board.users, owner: board.owner, imagePath: board.imagePath})
         navigate(`/board/${board.id}`)
     }
 
@@ -65,7 +65,7 @@ const Boards = () => {
                         </StyledBox>
                         <StyledCardMedia
                             component="img"
-                            image={TestImage}
+                            image={board.imagePath}
                             alt="Live from space album cover"
                         />
                     </CardActionArea>
