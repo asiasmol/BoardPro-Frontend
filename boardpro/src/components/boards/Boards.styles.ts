@@ -1,9 +1,25 @@
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
 import {Box, Card, CardContent, CardMedia} from "@mui/material";
 
 export const Container = styled.div`
-  margin: 2rem 2rem;
-  border-radius: 2rem;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 6rem;
+`;
+
+export const ButtonContainer = styled.div`
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 6rem;
+`;
+
+export const TitleContainer = styled.div`
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 6rem;
 `;
 
 export const StyledCard = styled(Card)`
@@ -26,4 +42,36 @@ export const StyledCardContent = styled(CardContent)`
 export const StyledCardMedia = styled(CardMedia)`
   width: 3rem
 `;
+
+
+export const LoaderContainer = styled.div
+`display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+height: 100%;`
+;
+
+const rotate360 = keyframes
+`from {
+    transform: rotate(0deg);
+}
+to {
+    transform: rotate(360deg);
+}`
+;
+
+export const Loader = styled.div
+`animation: ${rotate360} 1s linear infinite;
+transform: translateZ(0);
+
+border-top: 2px solid grey;
+border-right: 2px solid grey;
+border-bottom: 2px solid grey;
+border-left: 4px solid black;
+background: transparent;
+width: 24px;
+height: 24px;
+border-radius: 50%;`
+;
 

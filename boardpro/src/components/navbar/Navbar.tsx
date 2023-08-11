@@ -66,7 +66,7 @@ const Navbar = () => {
 
 
     return (
-        <CustomAppBar position="static">
+        <CustomAppBar position="fixed">
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                     Powerboard
@@ -128,7 +128,7 @@ const Navbar = () => {
                                         ))}
                                     </RadioGroup>
                                     <Container>
-                                    <Button variant="contained" type="submit" sx={{ mt: 2 }}>Save</Button>
+                                    <Button variant="contained" disabled={!selectedImage} type="submit" sx={{ mt: 2 }}>Save</Button>
                                     </Container>
                                 </form>
                             </Box>

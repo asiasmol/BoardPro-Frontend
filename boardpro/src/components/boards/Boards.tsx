@@ -2,23 +2,26 @@ import React, {useCallback, useContext, useEffect, useState} from "react";
 import {toast} from "react-toastify";
 
 import {BoardApi} from "../../api/BoardApi";
-import TestImage from "../../image.jpg"
 import {useNavigate} from "react-router-dom";
 import {BoardResponse} from "../../api/apiModels/BoardResponse";
 import {BoardContext} from "../../context/BoardContext";
 
 import {
-    Container,
+    Container, Loader,
+    LoaderContainer,
     StyledBox,
-    StyledCard, StyledCardContent, StyledCardMedia
+    StyledCard, StyledCardContent, StyledCardMedia, TitleContainer
 } from "./Boards.styles";
 import {CardActionArea, Typography} from "@mui/material";
+import {ThemeContext} from "../../context/ThemeContext";
 
 
 const Boards = () => {
     const navigate = useNavigate()
     const [boards, setBoards] = useState<BoardResponse[]>([]);
     const context = useContext(BoardContext)
+    const [isLoading, setIsLading] = useState<boolean>()
+    const theme = useContext(ThemeContext);
 
     const handleBoardClick = (board: BoardResponse) =>{
         context.currentBoardModifier({id: board.id, title: board.title, cardLists: board.cardLists, users: board.users, owner: board.owner, imagePath: board.imagePath})
@@ -27,9 +30,11 @@ const Boards = () => {
 
 
     const fetchBoards = useCallback(async () => {
+        setIsLading(true)
         try {
             const response = await BoardApi.getBoards();
             setBoards(response.data)
+            setIsLading(false)
         } catch {
             toast.error("Bład serwera")
         }
@@ -41,9 +46,19 @@ const Boards = () => {
         fetchBoards();
     }, [fetchBoards])
 
-    if(boards.length === 0){
+    if (boards.length === 0) {
         return(
-            <h1>Brak boardów</h1>
+            <>
+                {isLoading ?
+                    <LoaderContainer>
+                        <Loader color={theme.theme.palette.secondary.main}/>
+                    </LoaderContainer>
+                    : (
+                        <TitleContainer>
+                            <h1>Brak boardów</h1>
+                        </TitleContainer>
+                    )}
+            </>
         )
     }
 

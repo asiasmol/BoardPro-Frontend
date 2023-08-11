@@ -4,8 +4,7 @@ import {CardListApi} from "../../api/CardListApi";
 import {BoardContext} from "../../context/BoardContext";
 import {CardListResponse} from "../../api/apiModels/CardListResponse";
 import {Box, Button, Grid} from "@mui/material";
-import {Container} from "../boards/Boards.styles";
-import {StyledTextField} from "./AddNewCardList.styles";
+import {ButtonContainer, StyledTextField} from "./AddNewCardList.styles";
 
 
 
@@ -67,20 +66,20 @@ const AddNewCardList = () => {
 
 
     return (
-        <Container>
+        <ButtonContainer>
             <Box>
                 {!showForm && (
                     <Button
                         variant="contained"
                         color="primary"
                         onClick={handleButtonClick}
-                        sx={{ width: '18rem', borderRadius: '0.5rem'}}
+                        sx={{ width: '18rem', marginLeft: "0.5rem", borderRadius: '0.5rem'}}
                     >
                         + Add new list
                     </Button>
                 )}
                 {showForm && (
-                    <Box component="form" onSubmit={createCardList} sx={{ width: '18rem' }}>
+                    <Box component="form" onSubmit={createCardList} sx={{ marginLeft: '1rem', width: '18rem' }}>
                         <Box mb={3}>
                             <StyledTextField
                                 type="text"
@@ -110,7 +109,7 @@ const AddNewCardList = () => {
                     </Box>
                 )}
             </Box>
-        </Container>
+        </ButtonContainer>
     )
 }
 

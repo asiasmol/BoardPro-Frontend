@@ -4,6 +4,7 @@ import {AuthApi} from "../../api/AuthApi";
 import {SignUpRequest} from "../../api/apiModels/SignUpRequest";
 import {toast} from "react-toastify";
 import {Box, Button, Container, CssBaseline, Grid, TextField, Typography, Link} from "@mui/material";
+import {StyledContainer} from "./Signup.styles";
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -28,6 +29,7 @@ const Signup = () => {
     return (
 
         <Container component="main" maxWidth="xs">
+            <StyledContainer>
 
             <Box
                 sx={{
@@ -108,6 +110,7 @@ const Signup = () => {
 
                 </Box>
             </Box>
+            </StyledContainer>
         </Container>
 
     )

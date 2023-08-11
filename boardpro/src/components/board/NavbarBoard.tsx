@@ -91,7 +91,7 @@ const NavbarBoard = () => {
 
 
     return (
-            <CustomAppBar position="static" color="secondary" enableColorOnDark>
+            <CustomAppBar position="fixed" color="secondary" enableColorOnDark>
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         {context.currentBoard?.title}

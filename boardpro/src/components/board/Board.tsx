@@ -12,7 +12,7 @@ import SortableCardList from "./SortableCardList";
 import CardList from "../cardList/CardList";
 import {CardSwapRequest} from "../../api/apiModels/CardSwapRequest";
 import {CardApi} from "../../api/CardApi";
-import {Body} from "./Board.styles";
+import {Body, Containerr} from "./Board.styles";
 
 const Board = () => {
     const context = useContext(BoardContext)
@@ -236,7 +236,7 @@ const Board = () => {
         <Body backgroundImage={context.currentBoard?.imagePath || ''}>
             <NavbarBoard/>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "start" }}>
-
+               <Containerr>
                 <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}>
                     <SortableContext items={
                         context.currentBoard
@@ -262,6 +262,7 @@ const Board = () => {
                         ): null}
                     </DragOverlay>
                 </DndContext>
+                   </Containerr>
             </div>
 
         </Body>

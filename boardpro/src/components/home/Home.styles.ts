@@ -5,6 +5,7 @@ export const Container = styled.div`
   margin: 10rem 20rem 10rem 20rem;
   display: flex;
   justify-content: space-between;
+  width: fit-content;
 `;
 
 export const TextContainer = styled.div`
@@ -46,7 +47,7 @@ export const ImageContainer = styled.div`
 
 export const ActivityVisualization = styled.div`
   display: grid;
-  grid-template-columns: repeat(18, 60px); /* 22 kwadraciki */
+  grid-template-columns: repeat(13, 60px); /* 22 kwadraciki */
   grid-template-rows: repeat(7, 60px); /* Dni tygodnia */
   gap: 6px; /* Odstęp między kwadracikami */
 

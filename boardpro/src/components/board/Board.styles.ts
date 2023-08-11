@@ -6,7 +6,14 @@ export const CustomAppBar = styled(AppBar)`
   background-color: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
   margin-bottom: 2rem;
+  padding-top: 4rem;
+  
 `;
+
+export const Containerr = styled.div`
+width: fit-content;
+margin-top: 10rem;`
+;
 
 
 export const StyledBox = styled(Box)`
@@ -46,12 +53,15 @@ export const StyledButton = styled(Button)`
 `;
 
 export const Body = styled.div<{ backgroundImage: string }>`
-background-image:url(${props => props.backgroundImage});
-background-size: cover;
-background-repeat: no-repeat;
-background-attachment: fixed;
-height: 100vh;
-opacity: 1;
-position: relative;
-z-index: 0;`
+    background-image:url(${props => props.backgroundImage});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: fit-content;
+    min-height: 100vh;
+    opacity: 1;
+    width: fit-content;
+    min-width: 100%;
+    position: relative;
+    z-index: 0;`
 ;

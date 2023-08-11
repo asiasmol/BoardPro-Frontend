@@ -9,11 +9,10 @@ import {
     ActivityVisualization
 } from "./Home.styles";
 import {useEffect, useState} from "react";
-import {ThemeContext} from "../../context/ThemeContext";
 
 
 const Home = () => {
-    const totalSquares = 18 * 7; // 22 kwadraciki na tydzień
+    const totalSquares = 13 * 7; // 22 kwadraciki na tydzień
 
     const generateColorShades = (totalSquares: number) => {
         const colors = [];
