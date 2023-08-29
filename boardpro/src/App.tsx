@@ -20,10 +20,8 @@ function App() {
                     <BoardContextProvider>
                         <CssBaseline />
                         <Navbar/>
-                        <main>
                             <AppRouter />
                             <ToastContainer />
-                        </main>
                         <Footer/>
                     </BoardContextProvider>
                 </UserContextProvider>

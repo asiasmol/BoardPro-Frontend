@@ -1,10 +1,10 @@
-import {SyntheticEvent, useState} from "react";
+import {SyntheticEvent, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom"
 import {AuthApi} from "../../api/AuthApi";
 import {SignUpRequest} from "../../api/apiModels/SignUpRequest";
 import {toast} from "react-toastify";
 import {Box, Button, Container, CssBaseline, Grid, TextField, Typography, Link} from "@mui/material";
-import {StyledContainer} from "./Signup.styles";
+import {StyledContainer, ValidationError} from "./Signup.styles";
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -12,6 +12,10 @@ const Signup = () => {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+    const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+    const [isDataValid, setIsDataValid] = useState<boolean>(false);
+
 
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault()
@@ -26,6 +30,22 @@ const Signup = () => {
         toast.success("Poprawnie zarejestrowano");
         navigate("/login");
     }
+
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const validatePassword = (password: string) => {
+        const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        return passwordRegex.test(password);
+    }
+
+    useEffect(() => {
+        setIsEmailValid(validateEmail(email));
+        setIsPasswordValid(validatePassword(password));
+        setIsDataValid((isPasswordValid && isEmailValid))
+    }, [email, password, isPasswordValid, isEmailValid]);
     return (
 
         <Container component="main" maxWidth="xs">
@@ -55,6 +75,7 @@ const Signup = () => {
                         value={firstName}
                         onChange={e=>setFirstName(e.target.value)}
                     />
+
                     <TextField
                         margin="normal"
                         required
@@ -67,6 +88,7 @@ const Signup = () => {
                         value={lastName}
                         onChange={e=>setLastName(e.target.value)}
                     />
+
                     <TextField
                         margin="normal"
                         required
@@ -79,6 +101,8 @@ const Signup = () => {
                         value={email}
                         onChange={e=>setEmail(e.target.value)}
                     />
+                    {!isEmailValid && email.length !== 0 && <ValidationError>Podaj poprawny adres email</ValidationError>}
+
                     <TextField
                         margin="normal"
                         required
@@ -91,10 +115,13 @@ const Signup = () => {
                         value={password}
                         onChange={e=>setPassword(e.target.value)}
                     />
+                    {!isPasswordValid && password.length !== 0 && <ValidationError>Hasło musi mieć co najmniej 8 znaków i zawierać jedną cyfrę, jedną małą i jedną dużą literę</ValidationError>}
+
                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
+                        disabled={!isDataValid}
                     >
                         Signup
                     </Button>

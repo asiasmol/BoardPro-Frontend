@@ -1,10 +1,9 @@
 
-import {SyntheticEvent, useCallback, useContext, useState} from "react";
+import {SyntheticEvent, useCallback, useContext, useState, useEffect} from "react";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import {BoardApi} from "../../api/BoardApi";
 import {UserContext} from "../../context/UserContext";
-import * as React from 'react';
 import {
     Box,
     Button,
@@ -28,7 +27,7 @@ const Navbar = () => {
     const {currentUser, currentUserModifier} = useContext(UserContext);
     const id = open ? 'simple-popover' : undefined;
     const { toggleTheme } = useContext(ThemeContext);
-    const [checked, setChecked] = React.useState(true);
+    const [checked, setChecked] = useState(true);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
 
@@ -63,7 +62,12 @@ const Navbar = () => {
         navigate("/");
     }, [navigate])
 
-
+    // useEffect(() => {
+    //     if (currentUser === null){
+    //         console.log("odswieżam")
+    //
+    //     }
+    // }, [currentUser]);
 
     return (
         <CustomAppBar position="fixed">

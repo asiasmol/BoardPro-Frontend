@@ -39,7 +39,6 @@ export function withAxiosIntercepted<T extends JSX.IntrinsicAttributes>(
                     baseURL: process.env.REACT_APP_API_URL,
                 };
             });
-
             authorizedApi.interceptors.response.use(
                 (response) => {
                     return response;
@@ -50,6 +49,7 @@ export function withAxiosIntercepted<T extends JSX.IntrinsicAttributes>(
                         localStorage.removeItem('ACCESS_TOKEN')
                         localStorage.removeItem("currentUser")
                         navigate("/login");
+                        window.location.reload()
                     }
 
                     return Promise.reject(error);

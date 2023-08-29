@@ -1,17 +1,20 @@
-import {SyntheticEvent, useContext, useState} from 'react';
+import {SyntheticEvent, useContext, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import {AuthApi} from "../../api/AuthApi";
 import {ACCESS_TOKEN} from "../../constants/constants";
 import {UserContext} from "../../context/UserContext";
 import {Box, Button, Container, TextField, Typography} from "@mui/material";
-import {StyledContainer} from "./Login.styles";
-
+import {StyledContainer, ValidationError} from "./Login.styles";
 const Login = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const context = useContext(UserContext)
+    const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+    const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+    const [isDataValid, setIsDataValid] = useState<boolean>(false);
+
 
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault()
@@ -26,6 +29,23 @@ const Login = () => {
         toast.success("Poprawnie zalogowano");
         navigate('/');
     }
+
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const validatePassword = (password: string) => {
+        const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        return passwordRegex.test(password);
+    }
+
+    useEffect(() => {
+        setIsEmailValid(validateEmail(email));
+        setIsPasswordValid(validatePassword(password));
+        setIsDataValid((isPasswordValid && isEmailValid))
+    }, [email, password, isPasswordValid, isEmailValid]);
+
     return (
 
         <Container component="main" maxWidth="xs">
@@ -41,7 +61,7 @@ const Login = () => {
                 <Typography component="h1" variant="h5">
                     Login
                 </Typography>
-                <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={submitHandler}>
 
                     <TextField
                         margin="normal"
@@ -51,7 +71,6 @@ const Login = () => {
                         label="Email"
                         name="email"
                         autoComplete="email"
-                        autoFocus
                         value={email}
                         onChange={e=>setEmail(e.target.value)}
                     />
@@ -67,7 +86,7 @@ const Login = () => {
                         value={password}
                         onChange={e=>setPassword(e.target.value)}
                     />
-                    <Button type="submit" fullWidth variant="contained">
+                    <Button type="submit" fullWidth variant="contained" disabled={!isDataValid}>
                         Login
                     </Button>
 

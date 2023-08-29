@@ -8,13 +8,6 @@ export const Container = styled.div`
   margin-top: 6rem;
 `;
 
-export const ButtonContainer = styled.div`
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 6rem;
-`;
-
 export const TitleContainer = styled.div`
   width: fit-content;
   margin-left: auto;
@@ -44,13 +37,14 @@ export const StyledCardMedia = styled(CardMedia)`
 `;
 
 
-export const LoaderContainer = styled.div
-`display: flex;
-justify-content: center;
-align-items: center;
-width: 100%;
-height: 100%;`
-;
+export const LoaderContainer = styled.div`
+    margin-top: 20rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    `;
 
 const rotate360 = keyframes
 `from {
@@ -65,9 +59,9 @@ export const Loader = styled.div
 `animation: ${rotate360} 1s linear infinite;
 transform: translateZ(0);
 
-border-top: 2px solid grey;
-border-right: 2px solid grey;
-border-bottom: 2px solid grey;
+border-top: 4px solid grey;
+border-right: 4px solid grey;
+border-bottom: 4px solid grey;
 border-left: 4px solid black;
 background: transparent;
 width: 24px;

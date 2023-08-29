@@ -20,7 +20,7 @@ const Boards = () => {
     const navigate = useNavigate()
     const [boards, setBoards] = useState<BoardResponse[]>([]);
     const context = useContext(BoardContext)
-    const [isLoading, setIsLading] = useState<boolean>()
+    const [isLoading, setIsLading] = useState<boolean>(false)
     const theme = useContext(ThemeContext);
 
     const handleBoardClick = (board: BoardResponse) =>{
