@@ -12,8 +12,10 @@ const Signup = () => {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [repeatedPassword, setRepeatedPassword] = useState('')
     const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
     const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+    const [isRepeatedPasswordValid, setIsRepeatedPasswordValid] = useState<boolean>(true);
     const [isDataValid, setIsDataValid] = useState<boolean>(false);
 
 
@@ -41,11 +43,16 @@ const Signup = () => {
         return passwordRegex.test(password);
     }
 
+    const validateRepeatedPassword = (repeatedPassword: string) => {
+        return password == repeatedPassword;
+    };
+
     useEffect(() => {
         setIsEmailValid(validateEmail(email));
         setIsPasswordValid(validatePassword(password));
-        setIsDataValid((isPasswordValid && isEmailValid))
-    }, [email, password, isPasswordValid, isEmailValid]);
+        setIsRepeatedPasswordValid(validateRepeatedPassword(repeatedPassword));
+        setIsDataValid((isPasswordValid && isEmailValid && isRepeatedPasswordValid))
+    }, [email, password, repeatedPassword, isPasswordValid, isEmailValid, isRepeatedPasswordValid]);
     return (
 
         <Container component="main" maxWidth="xs">
@@ -88,7 +95,6 @@ const Signup = () => {
                         value={lastName}
                         onChange={e=>setLastName(e.target.value)}
                     />
-
                     <TextField
                         margin="normal"
                         required
@@ -116,6 +122,20 @@ const Signup = () => {
                         onChange={e=>setPassword(e.target.value)}
                     />
                     {!isPasswordValid && password.length !== 0 && <ValidationError>Hasło musi mieć co najmniej 8 znaków i zawierać jedną cyfrę, jedną małą i jedną dużą literę</ValidationError>}
+
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="repeatedPassword"
+                        label="repeatedPassword"
+                        type="password"
+                        id="repeatedPassword"
+                        autoComplete="current-password"
+                        value={repeatedPassword}
+                        onChange={e=>setRepeatedPassword(e.target.value)}
+                    />
+                    {!isRepeatedPasswordValid && password.length !== 0 && <ValidationError>Hasła nie są zgodne</ValidationError>}
 
                     <Button
                         type="submit"
