@@ -3,6 +3,8 @@ import {authorizedApi} from "../hooks/withAxiosIntercepted";
 import {CardRequest} from "./apiModels/CardRequest";
 import {CardSwapRequest} from "./apiModels/CardSwapRequest";
 
+export const baseURL = "http://localhost:8080/api/card"
+
 export class CardApi {
 
     static createCard = async (request: {
@@ -10,7 +12,7 @@ export class CardApi {
         title: string;
         cardListId: number;
     }, boardId: number | undefined, cardListId: number | undefined) =>
-        await authorizedApi.post("http://localhost:8080/api/card", request, {
+        await authorizedApi.post(`${baseURL}`, request, {
             params: {
                 boardId: boardId,
                 cardListId: cardListId
@@ -18,7 +20,7 @@ export class CardApi {
         });
 
     static updateCard = async (request: CardRequest, cardId: number, boardId: number | undefined, cardListId: number | undefined) =>
-        await authorizedApi.patch("http://localhost:8080/api/card", request, {
+        await authorizedApi.patch(`${baseURL}`, request, {
             params: {
                 cardId: cardId,
                 boardId: boardId,
@@ -27,7 +29,7 @@ export class CardApi {
         });
 
     static deleteCard = async (cardId: number, boardId: number | undefined, cardListId: number | undefined) =>
-        await authorizedApi.delete("http://localhost:8080/api/card", {
+        await authorizedApi.delete(`${baseURL}`, {
             params: {
                 cardId: cardId,
                 boardId: boardId,
@@ -36,10 +38,10 @@ export class CardApi {
         });
 
     static addUser = async (param: { cardId: number | undefined,  cardListId: number | undefined, boardId: number | undefined, userEmail: string | undefined; }) =>
-        await authorizedApi.patch(`http://localhost:8080/api/card/add-executors?cardId=${param.cardId}&boardId=${param.boardId}&cardListId=${param.cardListId}&userEmail=${param.userEmail}`);
+        await authorizedApi.patch(`${baseURL}/add-executors?cardId=${param.cardId}&boardId=${param.boardId}&cardListId=${param.cardListId}&userEmail=${param.userEmail}`);
 
     static swapCard = async (requests: CardSwapRequest[], boardId: number | undefined) =>
-        await authorizedApi.patch("http://localhost:8080/api/card/swap", requests, {
+        await authorizedApi.patch(`${baseURL}/swap`, requests, {
             params: {
                 boardId: boardId
             },

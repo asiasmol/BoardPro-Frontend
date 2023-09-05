@@ -1,5 +1,5 @@
 
-import {SyntheticEvent, useCallback, useContext, useState, useEffect} from "react";
+import {SyntheticEvent, useCallback, useContext, useState} from "react";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import {BoardApi} from "../../api/BoardApi";
@@ -50,9 +50,11 @@ const Navbar = () => {
             cardLists: [],
             imagePath: selectedImage
         })
-        toast.success("Utworzono Tablice");
-        navigate("/boards")
-        handleClose();
+        setTitle('')
+        handleClose()
+        toast.success("Board created");
+        navigate("/boards");
+        window.location.reload()
     }
 
     const logout = useCallback(() => {

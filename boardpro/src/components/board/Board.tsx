@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 import AddNewCardList from "../cardList/AddNewCardList";
 import { BoardContext } from "../../context/BoardContext";
 import {closestCorners, DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, TouchSensor, useSensor, useSensors} from "@dnd-kit/core";
@@ -13,6 +13,8 @@ import CardList from "../cardList/CardList";
 import {CardSwapRequest} from "../../api/apiModels/CardSwapRequest";
 import {CardApi} from "../../api/CardApi";
 import {Body, Containerr} from "./Board.styles";
+import {toast} from "react-toastify";
+import {BoardApi} from "../../api/BoardApi";
 
 const Board = () => {
     const context = useContext(BoardContext)
@@ -201,35 +203,23 @@ const Board = () => {
             }
         }
     }
-    const findCardListContainer = (
-        cardLists: CardListResponse[],
-        id: string
-    ) => {
+    const findCardListContainer = (cardLists: CardListResponse[], id: string) => {
         return cardLists.find((list) => list.cards.some((card) => card.id.toString() === id));
     };
-
-    // const updateBoard = async () => {
-    //     try {
-    //         if (context.currentBoard) {
-    //             const cardLists = context.currentBoard.cardLists
-    //             console.log(cardLists)
-    //             const boardRequest: BoardRequest = {
-    //                 title: context.currentBoard.title,
-    //                 cardLists: cardLists
-    //             }
-    //
-    //             await BoardApi.updateBoard(boardRequest, context.currentBoard.id);
-    //
-    //             toast.success("Board updated successfully");
-    //         }
-    //     } catch (error) {
-    //         toast.error("Something went wrong");
-    //     }
-    // }
 
     useEffect(() => {
         setCards(context.currentCardList?.cards || []);
     }, [context.currentCardList]);
+
+    const fetchBoard = useCallback(async (boardId: string) => {
+        try {
+            const response = await BoardApi.getBoard({boardId: boardId});
+            context.currentBoardModifier(response.data)
+        } catch {
+            toast.error("Bład serwera")
+        }
+
+    }, []);
 
 
     return (
