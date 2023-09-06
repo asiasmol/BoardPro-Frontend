@@ -4,12 +4,7 @@ import { ACCESS_TOKEN } from "../constants/constants";
 import { useNavigate } from "react-router-dom";
 import {UserContext} from "../context/UserContext";
 
-
-// pokazać najpierw na dwóch komponentach z route i console logu w useEffect - kompozycja pozwalająca przekształcić komponent
-// w inny komponent, reużywać logiki
-
 export const authorizedApi = axios.create();
-
 export function withAxiosIntercepted<T extends JSX.IntrinsicAttributes>(
     Component: React.ComponentType<T>
 ) {

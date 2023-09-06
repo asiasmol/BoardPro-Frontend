@@ -38,12 +38,12 @@ const AddNewCardList = () => {
                 });
             }
             setCardListAdded(true)
-            toast.success("Dodano Karte");
+            toast.success("Card Added");
             if (context.currentBoard){
                 sendMessage(context.currentBoard?.id.toString())
             }
         } catch {
-            toast.error("Błąd serwera tutaj");
+            toast.error("Error server");
         }
     };
 

@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom"
 import {AuthApi} from "../../api/AuthApi";
 import {SignUpRequest} from "../../api/apiModels/SignUpRequest";
 import {toast} from "react-toastify";
-import {Box, Button, Container, CssBaseline, Grid, TextField, Typography, Link} from "@mui/material";
+import {Box, Button, Container, Grid, TextField, Typography, Link} from "@mui/material";
 import {StyledContainer, ValidationError} from "./Signup.styles";
 
 const Signup = () => {
@@ -29,7 +29,7 @@ const Signup = () => {
         }
         AuthApi.signUp(user).then(r => {
         })
-        toast.success("Poprawnie zarejestrowano");
+        toast.success("SignUp");
         navigate("/login");
     }
 

@@ -1,20 +1,6 @@
 import React, {useContext, useState} from "react";
-import {Avatar, Box, Button, Menu, MenuItem, Modal, Typography} from "@mui/material";
-import {
-    Container,
-    StyledBox,
-    StyledCard,
-    StyledTextareaAutosize,
-    StyledCardContent,
-    StyledTypography,
-    TitleContainer,
-    BodyContainer,
-    ListTypography,
-    StyledCloseIcon,
-    StyledTextField,
-    StyledCDeleteForeverIcon,
-    StyledAddButton
-} from "./CardComponent.styles";
+import {Avatar, Box, Menu, MenuItem, Modal, Typography} from "@mui/material";
+import {Container, StyledBox, StyledCard, StyledTextareaAutosize, StyledCardContent, StyledTypography, TitleContainer, BodyContainer, ListTypography, StyledCloseIcon, StyledTextField, StyledCDeleteForeverIcon, StyledAddButton} from "./CardComponent.styles";
 import {CardListResponse} from "../../api/apiModels/CardListResponse";
 import { CardApi } from "../../api/CardApi";
 import {CardResponse} from "../../api/apiModels/CardResponse";
@@ -101,10 +87,10 @@ const CardComponent = ({card, cardList}: Props) => {
                 });
                 sendMessage(context.currentBoard.id.toString())
             }
-            toast.success("Dodano Uzytkownika");
+            toast.success("User Added");
         } catch {
 
-            toast.error("Błąd serwera przy dodawaniua uzytkownika");
+            toast.error("Error server");
         }
 
     };
@@ -295,11 +281,11 @@ const CardComponent = ({card, cardList}: Props) => {
                                     defaultValue={card.description}
                                     aria-label="minimum height"
                                     minRows={3}
-                                    placeholder="Notatka"
+                                    placeholder="Description"
                                 />
                             ) : (
                                 <StyledTypography fontSize={"small"} id="modal-modal-description" variant="h6" onClick={handleDescriptionClick}>
-                                    {card.description ? card.description : "Dodaj bardziej szczegółowy opis..."}
+                                    {card.description ? card.description : "Add a more detailed description..."}
                                 </StyledTypography>
                             )
                         }

@@ -15,16 +15,22 @@ const Login = () => {
 
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault()
-        const response = await AuthApi.signIn({
-            email : email,
-            password: password
-        })
-        const user = {email: email, firstname:"imie"};
-        localStorage.setItem(ACCESS_TOKEN, response.data.token);
-        localStorage.setItem('currentUser', JSON.stringify((user)));
-        context.currentUserModifier(user)
-        toast.success("Poprawnie zalogowano");
-        navigate('/');
+        try{
+            const response = await AuthApi.signIn({
+                email : email,
+                password: password
+            })
+            const user = {email: email, firstname:"imie"};
+            localStorage.setItem(ACCESS_TOKEN, response.data.token);
+            localStorage.setItem('currentUser', JSON.stringify((user)));
+            context.currentUserModifier(user)
+            toast.success("Logged In");
+            navigate('/');
+        }
+        catch (error){
+            toast.error("Invalid password or username")
+        }
+
     }
 
     return (

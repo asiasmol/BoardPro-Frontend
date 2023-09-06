@@ -221,7 +221,7 @@ const Board = () => {
             const response = await BoardApi.getBoard({boardId: boardId});
             context.currentBoardModifier(response.data)
         } catch {
-            toast.error("Bład serwera")
+            toast.error("Server error")
         }
 
     }, []);
@@ -230,7 +230,6 @@ const Board = () => {
     useEffect(() => {
         const sock = new SockJS('http://localhost:8080/stomp');
         const client = Stomp.over(sock);
-
         const connectCallback = () => {
             client.subscribe('/topic/messages', (payload) => {
                 const newMessage = JSON.parse(payload.body).message;

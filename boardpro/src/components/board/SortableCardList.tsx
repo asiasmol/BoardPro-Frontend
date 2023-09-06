@@ -5,7 +5,6 @@ import CardList from "../cardList/CardList";
 import { CardListResponse } from "../../api/apiModels/CardListResponse";
 
 interface SortableCardListProps {
-
     cardList: CardListResponse;
 }
 

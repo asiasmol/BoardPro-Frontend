@@ -1,8 +1,5 @@
 import type { MouseEvent, KeyboardEvent } from 'react'
-import {
-    MouseSensor as LibMouseSensor,
-    KeyboardSensor as LibKeyboardSensor
-} from '@dnd-kit/core'
+import {MouseSensor as LibMouseSensor, KeyboardSensor as LibKeyboardSensor} from '@dnd-kit/core'
 
 export class MouseSensor extends LibMouseSensor {
     static activators = [

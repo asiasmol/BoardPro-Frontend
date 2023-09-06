@@ -1,19 +1,9 @@
-
 import {SyntheticEvent, useCallback, useContext, useState} from "react";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import {BoardApi} from "../../api/BoardApi";
 import {UserContext} from "../../context/UserContext";
-import {
-    Box,
-    Button,
-    FormControlLabel,
-    Menu, Radio, RadioGroup,
-    Switch,
-    TextField,
-    Toolbar,
-    Typography
-} from "@mui/material";
+import {Box, Button, FormControlLabel, Menu, Radio, RadioGroup, Switch, TextField, Toolbar, Typography} from "@mui/material";
 import {Container, CustomAppBar} from "./Navbar.styles";
 import {ThemeContext} from "../../context/ThemeContext";
 
@@ -63,13 +53,6 @@ const Navbar = () => {
         localStorage.removeItem("currentUser")
         navigate("/");
     }, [navigate])
-
-    // useEffect(() => {
-    //     if (currentUser === null){
-    //         console.log("odswieżam")
-    //
-    //     }
-    // }, [currentUser]);
 
     return (
         <CustomAppBar position="fixed">

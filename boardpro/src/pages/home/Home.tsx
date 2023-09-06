@@ -1,13 +1,4 @@
-import {
-    Container,
-    LargeFont,
-    MediumFont,
-    TextContainer,
-    ButtonContainer,
-    StyledButton,
-    ImageContainer,
-    ActivityVisualization
-} from "./Home.styles";
+import {Container, LargeFont, MediumFont, TextContainer, ButtonContainer, StyledButton, ImageContainer, ActivityVisualization} from "./Home.styles";
 import {useEffect, useState} from "react";
 
 
@@ -65,18 +56,18 @@ const Home = () => {
     return (
         <Container>
             <TextContainer>
-                <LargeFont>BoardPro łączy wszystkie </LargeFont>
-                <LargeFont>zadania i narzędzia aby </LargeFont>
-                <LargeFont>osiągnąć maksymalną wydajność</LargeFont>
+                <LargeFont>BoardPro combines all </LargeFont>
+                <LargeFont>tasks and tools to achieve </LargeFont>
+                <LargeFont>maximum efficiency. </LargeFont>
                 <MediumFont>
-                    Zorganizuj pracę, osiągaj wydajność!
+                    Organize your work and achieve productivity!
                 </MediumFont>
                 <ButtonContainer>
                     <StyledButton href="/signup" color="primary" variant="contained">
                         Start
                     </StyledButton>
                     <StyledButton color="secondary" variant="contained">
-                        Jak to działa ?
+                        "How does it work?"
                     </StyledButton>
                 </ButtonContainer>
             </TextContainer>

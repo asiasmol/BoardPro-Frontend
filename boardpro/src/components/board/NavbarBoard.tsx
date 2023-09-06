@@ -24,7 +24,7 @@ const NavbarBoard = () => {
             const response = await UserApi.getAllUsers();
             setUsers(response.data)
         } catch {
-            toast.error("Bład serwera")
+            toast.error("Server error")
         }
 
     }, []);
@@ -58,9 +58,9 @@ const NavbarBoard = () => {
                 setUsers(updatedUserList);
                 sendMessage(context.currentBoard.id.toString())
             }
-            toast.success("Dodano Uzytkownika");
+            toast.success("User Added");
         } catch {
-            toast.error("Błąd serwera przy dodawaniua uzytkownika");
+            toast.error("Server error");
         }
     };
 
@@ -81,9 +81,9 @@ const NavbarBoard = () => {
                 users: updatedUserList,
             });
             setUsers(updatedUserList);
-            toast.success("Usunięto użytkownika z borda");
+            toast.success("User removed from the board");
         } catch (error) {
-            toast.error("Błąd serwera podczas usuwania użytkownika");
+            toast.error("Server error");
         }
     }
 

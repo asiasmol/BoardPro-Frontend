@@ -5,13 +5,7 @@ import {BoardApi} from "../../api/BoardApi";
 import {useNavigate} from "react-router-dom";
 import {BoardResponse} from "../../api/apiModels/BoardResponse";
 import {BoardContext} from "../../context/BoardContext";
-
-import {
-    Container, Loader,
-    LoaderContainer,
-    StyledBox,
-    StyledCard, StyledCardContent, StyledCardMedia, TitleContainer
-} from "./Boards.styles";
+import {Container, Loader, LoaderContainer, StyledBox, StyledCard, StyledCardContent, StyledCardMedia, TitleContainer} from "./Boards.styles";
 import {CardActionArea, Typography} from "@mui/material";
 import {ThemeContext} from "../../context/ThemeContext";
 
@@ -36,7 +30,7 @@ const Boards = () => {
             setBoards(response.data)
             setIsLading(false)
         } catch {
-            toast.error("Bład serwera")
+            toast.error("Server error")
         }
 
     }, []);
@@ -55,7 +49,7 @@ const Boards = () => {
                     </LoaderContainer>
                     : (
                         <TitleContainer>
-                            <h1>Brak boardów</h1>
+                            <h1>No boards available</h1>
                         </TitleContainer>
                     )}
             </>
