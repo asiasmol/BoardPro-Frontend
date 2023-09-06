@@ -1,8 +1,11 @@
-# Powerboard
+# BoardPro
 Kanban board web application
+
 ## Goal
 Powerboard was created as a 'skill showcase' app and hopefully will help me land my first job as a Java developer.
+
 ## Technologies
+
 Backend
 * Java
 * Spring Boot
@@ -27,6 +30,10 @@ Deploy
 
 # Live version
 soon
+
+# Link to Backend 
+
+LINK - [(LINK)](https://github.com/asiasmol/BoardPro-Backend.git)
 
 ## Gifs
 
