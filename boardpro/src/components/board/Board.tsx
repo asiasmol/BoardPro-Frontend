@@ -15,6 +15,9 @@ import {CardApi} from "../../api/CardApi";
 import {Body, Containerr} from "./Board.styles";
 import {toast} from "react-toastify";
 import {BoardApi} from "../../api/BoardApi";
+import {Stomp} from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+import {sendMessage} from "../message/MessageSender";
 
 const Board = () => {
     const context = useContext(BoardContext)
@@ -84,7 +87,9 @@ const Board = () => {
 
         setIsDragging(false);
         context.isDraggingModifier(false);
-
+        if (context.currentBoard){
+            sendMessage(context.currentBoard?.id.toString())
+        }
         if(context.currentBoard && over) {
             let targetList = findCardListContainer(context.currentBoard?.cardLists, over.id as string);
             if(!active || !over || active.id === over.id && previousList != targetList){
@@ -219,6 +224,32 @@ const Board = () => {
             toast.error("Bład serwera")
         }
 
+    }, []);
+
+
+    useEffect(() => {
+        const sock = new SockJS('http://localhost:8080/stomp');
+        const client = Stomp.over(sock);
+
+        const connectCallback = () => {
+            client.subscribe('/topic/messages', (payload) => {
+                const newMessage = JSON.parse(payload.body).message;
+                if(newMessage){
+                    if(context.currentBoard){
+                        let id: string = context.currentBoard.id.toString()
+                        if(newMessage === id) {
+                            fetchBoard(id)
+                        }
+                    }
+                }
+            });
+        };
+
+        client.connect({}, connectCallback);
+        return () => {
+            client.disconnect(() => {
+            });
+        };
     }, []);
 
 

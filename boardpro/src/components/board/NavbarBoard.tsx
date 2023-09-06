@@ -8,6 +8,7 @@ import {toast} from "react-toastify";
 import {ThemeContext} from "../../context/ThemeContext";
 import {BoardApi} from "../../api/BoardApi";
 import {UserContext} from "../../context/UserContext";
+import {sendMessage} from "../message/MessageSender";
 const NavbarBoard = () => {
     const [open, setOpen] = React.useState(false);
     const [users, setUsers] = useState<UserResponse[]>([]);
@@ -55,6 +56,7 @@ const NavbarBoard = () => {
                     users: updatedUserList,
                 });
                 setUsers(updatedUserList);
+                sendMessage(context.currentBoard.id.toString())
             }
             toast.success("Dodano Uzytkownika");
         } catch {

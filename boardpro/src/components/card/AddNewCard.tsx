@@ -6,6 +6,7 @@ import {CardResponse} from "../../api/apiModels/CardResponse";
 import {Box, Grid, Button} from "@mui/material";
 import {StyledTextField} from "./AddNewCard.styles";
 import {CardListResponse} from "../../api/apiModels/CardListResponse";
+import {sendMessage} from "../message/MessageSender";
 
 interface Props{
     cardList: CardListResponse
@@ -50,6 +51,9 @@ const AddNewCard = ({cardList}: Props) => {
             }
             setCardAdded(true)
             toast.success("Dodano Karte");
+            if (context.currentBoard){
+                sendMessage(context.currentBoard?.id.toString())
+            }
         } catch {
             toast.error("Błąd serwera tutaj");
         }

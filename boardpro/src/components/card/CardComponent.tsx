@@ -27,6 +27,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 import PeopleIcon from '@mui/icons-material/People';
 import {UserResponse} from "../../api/apiModels/UserResponse";
 import AddIcon from '@mui/icons-material/Add';
+import {sendMessage} from "../message/MessageSender";
 
 
 
@@ -98,6 +99,7 @@ const CardComponent = ({card, cardList}: Props) => {
                     ...context.currentBoard,
                     cardLists: updatedCardLists,
                 });
+                sendMessage(context.currentBoard.id.toString())
             }
             toast.success("Dodano Uzytkownika");
         } catch {

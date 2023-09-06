@@ -5,6 +5,7 @@ import {BoardContext} from "../../context/BoardContext";
 import {CardListResponse} from "../../api/apiModels/CardListResponse";
 import {Box, Button, Grid} from "@mui/material";
 import {ButtonContainer, StyledTextField} from "./AddNewCardList.styles";
+import {sendMessage} from "../message/MessageSender";
 
 
 
@@ -38,6 +39,9 @@ const AddNewCardList = () => {
             }
             setCardListAdded(true)
             toast.success("Dodano Karte");
+            if (context.currentBoard){
+                sendMessage(context.currentBoard?.id.toString())
+            }
         } catch {
             toast.error("Błąd serwera tutaj");
         }
