@@ -26,7 +26,7 @@ Deploy
 * AWS RDS
 
 # Live version
-http://powerboard-front.s3-website.eu-north-1.amazonaws.com/
+soon
 
 ## Gifs
 
