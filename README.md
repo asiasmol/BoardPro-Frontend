@@ -28,9 +28,6 @@ Deploy
 * AWS EC2
 * AWS RDS
 
-# Live version
-[Live version](http://powerboard-front.s3-website.eu-north-1.amazonaws.com/)
-
 # Link to Backend 
 
 LINK - [(LINK)](https://github.com/asiasmol/BoardPro-Backend.git)
