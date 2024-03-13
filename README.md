@@ -29,7 +29,7 @@ Deploy
 * AWS RDS
 
 # Live version
-[Live version](http://boardpro.s3-website.eu-north-1.amazonaws.com)
+[Live version](http://powerboard-front.s3-website.eu-north-1.amazonaws.com/)
 
 # Link to Backend 
 
